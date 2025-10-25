@@ -8,7 +8,7 @@ function App() {
   const [count, setCount] = useState(0)
   const [array,setarray] = useState([])
   const fetchAPI = async () => {
-    const resp = await axios.get("http://localhost:8080")
+    const resp = await axios.get("/api")
     setarray(resp.data.fruits)
     console.log(resp.data.fruits)
   }
