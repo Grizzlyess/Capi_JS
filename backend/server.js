@@ -1,8 +1,8 @@
 //Backend modulos
-const exp = require("express")
-const cors = require("cors")
+import express from 'express'
+import cors from 'cors'
 
-const app = exp()
+const app = express()
 app.use(cors())
 
 app.get("/api",(req,res) => {
