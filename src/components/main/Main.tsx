@@ -7,17 +7,17 @@ const Main = () => {
 
             <div className="container text-center mb-3">
                 <div className="row">
-                    <div className="col">
+                    <div className="col p-1">
                         <section className="ratio ratio-1x1">
                             <img className="rounded" src="src/assets/img1.jpg" alt="" />
                         </section>
                     </div>
-                    <div className="col">
+                    <div className="col p-1">
                         <section className="ratio ratio-1x1">
                             <img className="rounded" src="src/assets/img2.jpg" alt="" />
                         </section>
                     </div>
-                    <div className="col">
+                    <div className="col p-1">
                         <section className="ratio ratio-1x1">
                             <img className="rounded" src="src/assets/img3.jpg" alt="" />
                         </section>

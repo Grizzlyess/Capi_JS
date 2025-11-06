@@ -3,7 +3,7 @@ import "./Header.css"
 const Header = () => {
     return (
         <header>
-            <div className="container text-center">
+            <div className="text-center align-items-center sticky-top">
                 <div className="row">
                     <div className="col ratio">
                         <img src="src/assets/capi.svg" alt="logo-capi" />

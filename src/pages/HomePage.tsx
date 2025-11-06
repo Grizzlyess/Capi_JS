@@ -4,7 +4,7 @@ import Footer from "../components/footer/Footer"
 
 const HomePage = () =>{
     return(
-        <div className="container d-flex flex-column justify-content-between min-vh-100">
+        <div className="d-flex flex-column justify-content-between min-vh-100">
             <Header />
             <Main />
             <Footer />
