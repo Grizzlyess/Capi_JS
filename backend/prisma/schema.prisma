@@ -21,7 +21,7 @@ model User {
 
   calculos CalculoCarbono[]
 
-  // Relacionamento de favoritos (Muitos-para-Muitos com Empresa)
+  // Relacionamento de favoritos-Empresa
   favoritedEmpresaIds String[]          @db.ObjectId
   favoritedEmpresas   Empresa[]         @relation("UserFavorites", fields: [favoritedEmpresaIds], references: [id])
 }
@@ -39,14 +39,14 @@ model Empresa {
   location             String
   sector               String
   near_term_status     String
-  near_term_target_year String // <-- CORRIGIDO AQUI (era "yean")
+  near_term_target_year String 
 
-  // Relacionamento de favoritos (Muitos-para-Muitos com User)
+  // Relacionamento de favoritos-User
   favoritedByUserIds String[] @db.ObjectId
   favoritedByUsers   User[]   @relation("UserFavorites", fields: [favoritedByUserIds], references: [id])
 }
 
-// Model para guardar os cálculos de carbono
+// calculadora de carbono
 model CalculoCarbono {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   valorTotal Float    // O resultado final do cálculo (ex: 10.5 toneladas)
