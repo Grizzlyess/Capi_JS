@@ -13,33 +13,29 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
 model User {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
   name  String
   pass  String
+  
+  role  String @default("USER") // Padrão é "USER", mas pode ser "ADMIN"
 
   calculos CalculoCarbono[]
 
-  // Relacionamento de favoritos-Empresa
-  favoritedEmpresaIds String[]          @db.ObjectId
-  favoritedEmpresas   Empresa[]         @relation("UserFavorites", fields: [favoritedEmpresaIds], references: [id])
-}
-
-model Adm {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique
-  name  String
-  pass  String
+  // Relacionamento de favoritos (Muitos-para-Muitos com Empresa)
+  favoritedEmpresaIds String[]  @db.ObjectId
+  favoritedEmpresas   Empresa[] @relation("UserFavorites", fields: [favoritedEmpresaIds], references: [id])
 }
 
 model Empresa {
-  id                   String  @id @default(auto()) @map("_id") @db.ObjectId
-  company_name         String  @unique
-  location             String
-  sector               String
-  near_term_status     String
-  near_term_target_year String 
+  id                    String  @id @default(auto()) @map("_id") @db.ObjectId
+  company_name          String  @unique
+  location              String
+  sector                String
+  near_term_status      String
+  near_term_target_year String
 
   // Relacionamento de favoritos-User
   favoritedByUserIds String[] @db.ObjectId
@@ -48,9 +44,9 @@ model Empresa {
 
 // calculadora de carbono
 model CalculoCarbono {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   valorTotal Float    // O resultado final do cálculo (ex: 10.5 toneladas)
-  data DateTime @default(now()) // Para sabermos qual é o mais recente
+  data       DateTime @default(now()) // Para sabermos qual é o mais recente
 
   userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id])
