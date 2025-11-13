@@ -1,10 +1,11 @@
 main{
-    background-color: #287854;
-    color: #ffffff;
+    background: linear-gradient(180deg, cyan 10%, #00D398 50%, #00A735 80%);
+    color: black;
 }
 
 .msg{
-    background-color: gray;
-    height: 30vh;
+    font-family: "Momo Signature", sans-serif;
     font-size: larger;
+    height: 20vh;
+    text-align: center;
 }

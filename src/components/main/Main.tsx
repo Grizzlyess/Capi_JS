@@ -4,7 +4,7 @@ const Main = () => {
     return(
         <main className="d-flex flex-column flex-fill">
             <div className="msg d-flex justify-content-center align-items-center">
-                <p>O que fazemos com o nosso planeta hoje determinará como será o amanhã.</p>
+                <p>O que fazemos com o planeta hoje determinará o nosso amanhã.</p>
             </div>
 
             <div className="container text-center mb-3">

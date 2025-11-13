@@ -3,16 +3,16 @@ import "./Header.css"
 const Header = () => {
     return (
         <header>
-            <div className="text-center align-items-center sticky-top">
+            <div className="container text-center align-items-center">
                 <div className="row">
                     <div className="col ratio">
-                        <img src="src/assets/capi.svg" alt="logo-capi" />
+                        <img src="src/assets/capi.svg" id="logo" alt="logo-capi" />
                     </div>
                     <div className="col">
                         <nav>Sobre</nav>
                     </div>
                     <div className="col">
-                        <button className="btn btn-success">login</button>
+                        <button className="btn btn-success">Login</button>
                     </div>
                 </div>
             </div>
