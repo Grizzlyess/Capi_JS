@@ -1,17 +1,10 @@
-import type { IGetEmpRepo } from "../../controllers/get-emp/protocols";
-import type { Emp } from "../../models/emp";
+import { IGetEmpRepo } from "../../controllers/get-emp/protocols";
+import { Emp } from "../../models/emp";
+import { PrismaClient } from "@prisma/client";
 
 export class MongoGetEmpRepo implements IGetEmpRepo {
   async getEmp(): Promise<Emp[]> {
-    return [
-      {
-        id: "1",
-        company_name: "teste",
-        location: "brasil",
-        sector: "eco",
-        near_term_status: "2023",
-        near_term_target_year: "2027",
-      },
-    ];
+    const prisma = new PrismaClient()
+    return await prisma.empresa.findMany()
   }
 }

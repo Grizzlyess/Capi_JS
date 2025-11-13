@@ -5,4 +5,5 @@ export interface Emp {
   sector: string;
   near_term_status: string;
   near_term_target_year: string;
+  favoritedByUserIds: string[];
 }
