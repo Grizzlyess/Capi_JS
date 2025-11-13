@@ -2,3 +2,9 @@ main{
     background-color: #287854;
     color: #ffffff;
 }
+
+.msg{
+    background-color: gray;
+    height: 30vh;
+    font-size: larger;
+}
