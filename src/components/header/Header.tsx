@@ -1,6 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
+  const navigate = useNavigate()
+  function OnLoginClick(){
+    navigate("/login")
+  }
   return (
     <header>
       <div className="container text-center align-items-center">
@@ -12,7 +17,7 @@ const Header = () => {
             <nav>Sobre</nav>
           </div>
           <div className="col">
-            <button className="btn btn-success">Login</button>
+            <button onClick={OnLoginClick}className="btn btn-success">Login</button>
           </div>
         </div>
       </div>
