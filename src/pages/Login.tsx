@@ -15,7 +15,7 @@ const Login = () => {
                     <div className="form mb-5">
                         <input type="password" className="form-control" placeholder="Senha" />
                     </div>
-                    <button type="submit" className="btn btn-info w-100 mb-3">
+                    <button type="submit" className="btn btn-info w-100 mb-3 mt-4">
                         Login
                     </button>
                     <div className="register">
