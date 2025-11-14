@@ -1,8 +1,27 @@
 .logo {
-  width: 100px;
+    width: 100px;
 }
 .login {
-  height: 65vh;
-  width: 40vw;
-  border-radius: 2%;
+    text-shadow: #000 1px 1px;
+    height: 65vh;
+    width: 40vw;
+    border-radius: 2%;
+    background-color: rgba(255, 255, 255, 0.17);
+    backdrop-filter: blur(100px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+.login h3 {
+    color: white;
+    text-align: center;
+}
+.forms {
+    margin: 50px;
+    padding: 30px;
+}
+.register p, a{
+    color: white;
+    text-decoration: none;
+}
+.register a:hover {
+    text-decoration: underline;
 }
