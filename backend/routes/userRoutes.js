@@ -5,6 +5,65 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 
+router.get('/', async (req, res) => {
+  try {
+    const users = await prisma.user.findMany();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar usuários" });
+  }
+});
+
+
+router.get('/by-email/:email', async (req, res) => {
+  const { email } = req.params;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    });
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar usuário' });
+  }
+});
+
+
+router.get('/by-name/:name', async (req, res) => {
+  const { name } = req.params;
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        name: {
+          contains: name, 
+          mode: 'insensitive',
+        },
+      },
+    });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar usuários' });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: id },
+    });
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar usuário' });
+  }
+});
+
+
 router.post('/', async (req, res) => {
   try {
     const { email, name, pass } = req.body;
@@ -17,15 +76,53 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { email, name, pass } = req.body;
   try {
-    const users = await prisma.user.findMany();
-    res.status(200).json(users);
+    const updatedUser = await prisma.user.update({
+      where: { id: id },
+      data: { email, name, pass },
+    });
+    res.json(updatedUser);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar usuários" });
+    res.status(500).json({ error: 'Não foi possível atualizar o usuário' });
   }
 });
 
 
+router.delete('/by-email/:email', async (req, res) => {
+  const { email } = req.params;
 
-export default router; // Exporta o roteador
+  try {
+    await prisma.user.delete({
+      where: { email: email },
+    });
+    
+    res.status(204).send();
+
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ error: 'Usuário com este email não encontrado' });
+    }
+    console.error(error);
+    res.status(500).json({ error: 'Não foi possível deletar o usuário' });
+  }
+});
+
+
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.user.delete({
+      where: { id: id },
+    });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: 'Não foi possível deletar o usuário' });
+  }
+});
+
+
+export default router;
