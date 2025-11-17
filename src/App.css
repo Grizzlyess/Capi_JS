@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Momo+Signature:wght@400;700&display=swap");
-
+*{
+  height: auto;
+}
 html,
 body {
-  height: 100vh;
+  height: auto;
   margin: 0;
 }
