@@ -1,0 +1,14 @@
+.main {
+    background: linear-gradient(180deg, cyan 10%, rgb(0, 211, 152) 50%, #00858a 90%);
+    color: black;
+    background-attachment: scroll;
+    background-size: cover;
+    min-height: auto;
+}
+
+.msg {
+    font-family: "Momo Signature", sans-serif;
+    font-size: larger;
+    height: 20vh;
+    text-align: center;
+}
