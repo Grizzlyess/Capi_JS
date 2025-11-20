@@ -1,5 +1,6 @@
 .login{
-    height: 65vh;
-    width: 40vw;
+    height: 40vh;
+    width: 35vw;
     border-radius: 2%;
+    background-color: #bbbf5465;
 }
