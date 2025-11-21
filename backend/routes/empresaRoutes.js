@@ -103,7 +103,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-//Filtrar por país
+//buscar por país
 router.get('/busca-local/:local', async (req, res) => {
   const { local } = req.params;
 
@@ -124,7 +124,7 @@ router.get('/busca-local/:local', async (req, res) => {
   }
 });
 
-//Filtrar por setor
+//buscar por setor
 router.get('/busca-setor/:setor', async (req, res) => {
   const { setor } = req.params;
 

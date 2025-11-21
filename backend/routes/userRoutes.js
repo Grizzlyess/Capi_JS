@@ -8,17 +8,20 @@ const prisma = new PrismaClient();
 
 router.get("/", async (req, res) => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      include: { favoritedEmpresas: true}
+    });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar usuários" });
   }
 });
 
+//buscar por email
 router.get("/by-email/:email", async (req, res) => {
   const { email } = req.params;
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.finUnique({
       where: { email: email },
     });
     if (!user) {
@@ -30,6 +33,7 @@ router.get("/by-email/:email", async (req, res) => {
   }
 });
 
+//buscar por nome
 router.get("/by-name/:name", async (req, res) => {
   const { name } = req.params;
   try {
@@ -47,6 +51,7 @@ router.get("/by-name/:name", async (req, res) => {
   }
 });
 
+//buscar por ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -226,6 +231,70 @@ router.delete("/:id", async (req, res) => {
     res.json({ "Info": "Usuario deletado!" });
   } catch (error) {
     res.status(500).json({ error: "Não foi possível deletar o usuário" });
+  }
+});
+
+
+
+//favoritar emprea
+router.patch('/:id/favoritos/:empresaId', async (req, res) => {
+  const { id, empresaId } = req.params;
+
+  try {
+    const userAtualizado = await prisma.user.update({
+      where: { id: id },
+      data: {
+        favoritedEmpresas: {
+          connect: { id: empresaId }, 
+        },
+      },
+      include: { favoritedEmpresas: true } 
+    });
+
+    res.json(userAtualizado);
+  } catch (error) {
+    res.status(500).json({ error: "Não foi possível favoritar a empresa" });
+  }
+});
+
+// remove empresa dos favoritos
+router.delete('/:id/favoritos/:empresaId', async (req, res) => {
+  const { id, empresaId } = req.params;
+
+  try {
+    const userAtualizado = await prisma.user.update({
+      where: { id: id },
+      data: {
+        favoritedEmpresas: {
+          disconnect: { id: empresaId },
+        },
+      },
+      include: { favoritedEmpresas: true }
+    });
+
+    res.json(userAtualizado);
+  } catch (error) {
+    res.status(500).json({ error: "Não foi possível desfavoritar a empresa" });
+  }
+});
+
+//Listar os favoritos
+router.get('/:id/favoritos', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: id },
+      select: { favoritedEmpresas: true }, // pega as empresas favoritas
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    res.json(user.favoritedEmpresas);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar favoritos" });
   }
 });
 
