@@ -23,6 +23,10 @@ model User {
   role  String @default("USER") // Padrão é "USER", mas pode ser "ADMIN"
 
   calculos CalculoCarbono[]
+  
+  //Esses dois é pra fazer a recuperar senha
+  resetToken       String?   
+  resetTokenExpiry DateTime?
 
   // Relacionamento de favoritos (Muitos-para-Muitos com Empresa)
   favoritedEmpresaIds String[]  @db.ObjectId

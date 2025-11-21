@@ -1,5 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -60,17 +62,126 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { email, name, pass } = req.body;
+    const hashedPassword = await bcrypt.hash(pass, 10);
+
     const newUser = await prisma.user.create({
-      data: { email, name, pass },
+      data: {
+        email: email,
+        name: name,
+        pass: hashedPassword,
+      },
     });
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ error: "Não foi possível criar o usuário" });
   }
 });
+
+// aqui é para se esqueceu senha
+router.post('/forgot-pass', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    const token = Math.floor(100000 + Math.random() * 900000).toString();
+
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        resetToken: token,
+        resetTokenExpiry: now,
+      },
+    });
+
+    console.log(`CODIGO DE 6 DIGITOS PARA ${email}: ${token}`);
+    
+    res.json({ message: "Código enviado com sucesso!" });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Erro ao processar solicitação" });
+  }
+});
+
+// Aqui é para resetar a senha e enviar a senha nova
+router.post('/reset-pass', async (req, res) => {
+  const { token, newPass } = req.body;
+
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        resetToken: token,
+        resetTokenExpiry: { gt: new Date() },
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: "Token inválido ou expirado" });
+    }
+
+    const hashPassword = await bcrypt.hash(newPass, 10);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        pass: hashPassword,
+        resetToken: null,
+        resetTokenExpiry: null,
+      },
+    });
+
+    res.json({ message: "Senha alterada com sucesso!" });
+
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao resetar senha" });
+  }
+});
+
+// Aqui é o LOGIN
+router.post('/login', async (req, res) => {
+  const { email, pass } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(pass, user.pass);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Senha incorreta" });
+    }
+
+    res.json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao fazer login" });
+  }
+});
+
+
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
