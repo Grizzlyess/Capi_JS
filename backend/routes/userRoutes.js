@@ -75,20 +75,41 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Cadastro
 router.post('/', async (req, res) => {
   try {
     const { email, name, pass } = req.body;
-    const hashedPassword = await bcrypt.hash(pass, 10);
+
+    const userExists = await prisma.user.findUnique({ where: { email } });
+    if (userExists) {
+      return res.status(400).json({ error: "Email já cadastrado" });
+    }
+
+    const hashPassword = await bcrypt.hash(pass, 10);
 
     const newUser = await prisma.user.create({
       data: {
         email: email,
         name: name,
-        pass: hashedPassword,
+        pass: hashPassword,
       },
     });
+
+    const mailOptions = {
+      from: 'Suporte CAPI <capivaratech383@gmail.com>', 
+      to: email,
+      subject: 'Bem-vindo ao CAPI! 🌿',
+
+      text: `Olá, ${name}! \n\nSeja muito bem-vindo(a) à CAPI. \nEstamos felizes em ter você conosco para juntos melhorar o planeta. \n\nAtt, Equipe CAPI.`
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`Email de boas-vindas enviado para ${email}`);
+
     res.status(201).json(newUser);
+
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Não foi possível criar o usuário" });
   }
 });
