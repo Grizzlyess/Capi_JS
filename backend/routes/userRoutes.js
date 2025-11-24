@@ -1,10 +1,18 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
+import nodemailer from 'nodemailer'
 
 const router = express.Router();
 const prisma = new PrismaClient();
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // Usa o Gmail
+  auth: {
+    user: process.env.EMAIL_USER, // Pega do arquivo .env
+    pass: process.env.EMAIL_PASS  // Pega do arquivo .env
+  }
+});
 
 router.get("/", async (req, res) => {
   try {
@@ -90,9 +98,7 @@ router.post('/forgot-pass', async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email: email },
-    });
+    const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado" });
@@ -105,19 +111,33 @@ router.post('/forgot-pass', async (req, res) => {
 
     await prisma.user.update({
       where: { id: user.id },
-      data: {
-        resetToken: token,
-        resetTokenExpiry: now,
-      },
+      data: { resetToken: token, resetTokenExpiry: now },
     });
 
-    console.log(`CODIGO DE 6 DIGITOS PARA ${email}: ${token}`);
-    
-    res.json({ message: "Código enviado com sucesso!" });
+    const mailOptions = {
+      from: 'capivaratech383@gmail.com>', //ORIGEM
+      to: email, //DESTINATARIO
+      subject: 'Recuperação de Senha - CAPI', // Assunto
+      text: `Seu código de verificação é: ${token}`, 
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <h2>Recuperação de Senha</h2>
+          <p>Olá, ${user.name}!</p>
+          <p>Você solicitou a redefinição de sua senha.</p>
+          <p>Seu código de verificação é:</p>
+          <h1 style="color: #4CAF50; letter-spacing: 5px;">${token}</h1>
+          <p>Este código expira em 1 hora.</p>
+        </div>
+      ` 
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`Email enviado para ${email}`);
+    res.json({ message: "Email enviado com sucesso! Verifique sua caixa de entrada." });
 
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Erro ao processar solicitação" });
+    console.error(error);
+    res.status(500).json({ error: "Erro ao enviar email" });
   }
 });
 
