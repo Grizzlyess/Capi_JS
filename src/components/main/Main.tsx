@@ -2,8 +2,10 @@ import "./Main.css"
 
 const Main = () => {
     return(
-        <main>
-            <p className="mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquid beatae, ea ut illo explicabo unde quo nihil eos neque! Deleniti nulla saepe animi cupiditate, ut quis cum beatae earum ad.</p>
+        <main className="d-flex flex-column flex-fill">
+            <div className="msg d-flex justify-content-center align-items-center">
+                <p>O que fazemos com o planeta hoje determinará o nosso amanhã.</p>
+            </div>
 
             <div className="container text-center mb-3">
                 <div className="row">
