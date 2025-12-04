@@ -6,11 +6,10 @@ header {
   height: 6vh;
 }
 
-button,
-nav {
-  margin-top: 10px;
+button, nav {
+  margin-top: 2px;
 }
 
 #logo {
-  height: 60px;
+  height: 50px;
 }
