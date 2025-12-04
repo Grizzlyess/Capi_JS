@@ -1,4 +1,5 @@
 import HomePage from "./pages/HomePage";
+import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login />,
+    },
+    {
+        path: "/cadastro",
+        element: <Cadastro />,
     },
 ]);
 function App() {

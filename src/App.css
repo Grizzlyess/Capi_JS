@@ -7,3 +7,12 @@ body {
   height: auto;
   margin: 0;
 }
+
+.logcad {
+  background-color: green;
+  color: white;
+}
+
+.logcad:hover{
+  background-color: lightgreen;
+}
