@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-//Esse daqui é para limitar o numero de páginas
+//Esse daqui é para limitar o numero de páginas /empresa?page=2
 router.get('/', async (req, res) => {
   const page = parseInt(req.query.page) || 1; 
   const limit = 20; 

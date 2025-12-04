@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
 router.get("/by-email/:email", async (req, res) => {
   const { email } = req.params;
   try {
-    const user = await prisma.user.finUnique({
+    const user = await prisma.user.findUnique({
       where: { email: email },
     });
     if (!user) {
