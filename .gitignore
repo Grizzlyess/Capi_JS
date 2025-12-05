@@ -9,6 +9,7 @@ lerna-debug.log*
 
 backend/node_modules
 Capi_JS/node_modules
+pnpm-lock.yaml
 node_modules
 dist
 dist-ssr
