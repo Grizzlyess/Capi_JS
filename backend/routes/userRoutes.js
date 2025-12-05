@@ -118,7 +118,7 @@ router.post('/', async (req, res) => {
       text: `Olá, ${name}! \n\nSeja muito bem-vindo(a) à CAPI. \nEstamos felizes em ter você conosco para juntos melhorar o planeta. \n\nAtt, Equipe CAPI.`
     };
 
-    await transporter.sendMail(mailOptions);
+    //await transporter.sendMail(mailOptions);
     console.log(`Email de boas-vindas enviado para ${email}`);
 
     res.status(201).json(newUser);

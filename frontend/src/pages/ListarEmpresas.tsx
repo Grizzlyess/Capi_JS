@@ -19,7 +19,7 @@ interface ApiResp {
 const ListarEmpresas = () => {
     const [emps, setemp] = useState<Empresa[]>([]);
     const fetchApi = async () => {
-        const resp = await axios.get<ApiResp>("http://localhost:8080/empresa/?page=1");
+        const resp = await axios.get<ApiResp>("/api/empresa/?page=1");
         setemp(resp.data.data ?? []);
     };
     useEffect(() => {
