@@ -6,11 +6,26 @@ import nodemailer from 'nodemailer'
 const router = express.Router();
 const prisma = new PrismaClient();
 
-const transporter = nodemailer.createTransport({
+/*const transporter = nodemailer.createTransport({
   service: 'gmail', // Usa o Gmail
   auth: {
     user: process.env.EMAIL_USER, // Pega do arquivo .env
     pass: process.env.EMAIL_PASS  // Pega do arquivo .env
+  }
+});*/
+
+
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
+  port: 587,
+  secure: false, 
+  auth: {
+    user: process.env.EMAIL_USER, 
+    pass: process.env.EMAIL_PASS
+  },
+  tls: {
+    rejectUnauthorized: false, 
+    ciphers: "SSLv3"           
   }
 });
 
@@ -96,7 +111,7 @@ router.post('/', async (req, res) => {
     });
 
     const mailOptions = {
-      from: 'Suporte CAPI <capivaratech383@gmail.com>', 
+      from: 'Suporte CAPI <suportecapitech@outlook.com>', 
       to: email,
       subject: 'Bem-vindo ao CAPI! 🌿',
 
@@ -136,7 +151,7 @@ router.post('/forgot-pass', async (req, res) => {
     });
 
     const mailOptions = {
-      from: 'capivaratech383@gmail.com>', //ORIGEM
+      from: 'suportecapitech@outlook.com>', //ORIGEM
       to: email, //DESTINATARIO
       subject: 'Recuperação de Senha - CAPI', // Assunto
       text: `Seu código de verificação é: ${token}`, 
@@ -201,18 +216,10 @@ router.post('/login', async (req, res) => {
   const { email, pass } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email: email },
-    });
+    const user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user) {
-      return res.status(404).json({ error: "Usuário não encontrado" });
-    }
-
-    const isPasswordValid = await bcrypt.compare(pass, user.pass);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Senha incorreta" });
+    if (!user || !(await bcrypt.compare(pass, user.pass))) {
+      return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
     res.json({
@@ -232,11 +239,19 @@ router.post('/login', async (req, res) => {
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { email, name, pass } = req.body;
+  
   try {
+    const dataToUpdate = { email, name };
+
+    if (pass) {
+      dataToUpdate.pass = await bcrypt.hash(pass, 10);
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: id },
-      data: { email, name, pass },
+      data: dataToUpdate,
     });
+    
     res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: "Não foi possível atualizar o usuário" });
