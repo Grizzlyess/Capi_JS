@@ -1,0 +1,7 @@
+.emps {
+  justify-items: center;
+  align-items: flex-end;
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+}

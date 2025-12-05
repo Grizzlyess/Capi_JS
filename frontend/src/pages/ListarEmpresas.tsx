@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "./ListarEmpresas.css"
 
 interface Empresa {
     id: string;
@@ -27,12 +28,16 @@ const ListarEmpresas = () => {
 
     return (
         <>
-            <div className="main d-flex justify-content-center" style={{ flexDirection: "column" }}>
+            <div className="main emps">
                 {emps.map((emp) => (
                     <div className="card" style={{ width: "20rem" }}>
                         <div className="card-body">
                             <div key={emp.id}>
-                                <p>{emp.company_name}</p>
+                                <h2 className="card-title">{emp.company_name}</h2>
+                                <h5>{emp.location}</h5>
+                                <h5>{emp.sector}</h5>
+                                <h5>{emp.near_term_status}</h5>
+                                <h5>{emp.near_term_target_year}</h5>
                             </div>
                         </div>
                     </div>
