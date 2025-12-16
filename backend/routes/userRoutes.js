@@ -229,19 +229,19 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get("/me", (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ error: "Não autenticado" });
-  }
+router.get('/login/me', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Não autenticado' });
+    }
 
-  res.json(req.session.user);
+    res.json(req.session.user);
 });
 
-router.post("/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie("sessionId");
-    res.json({ success: true });
-  });
+router.post('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.clearCookie('sessionId');
+        res.json({ success: true });
+    });
 });
 
 router.put('/:id', async (req, res) => {
