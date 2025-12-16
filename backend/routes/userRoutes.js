@@ -219,19 +219,17 @@ router.post('/login', async (req, res) => {
         }
 
         req.session.user = {
-            id: 1,
-            email,
+            id: user.id,
+            email: user.email,
         };
 
-        res.json({
-            status: true,
-        });
+        res.json(req.session.user);
     } catch (error) {
         res.status(500).json({ error: 'Erro ao fazer login' });
     }
 });
 
-app.get("/me", (req, res) => {
+router.get("/me", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ error: "Não autenticado" });
   }
@@ -239,7 +237,7 @@ app.get("/me", (req, res) => {
   res.json(req.session.user);
 });
 
-app.post("/logout", (req, res) => {
+router.post("/logout", (req, res) => {
   req.session.destroy(() => {
     res.clearCookie("sessionId");
     res.json({ success: true });
