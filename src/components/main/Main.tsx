@@ -1,8 +1,6 @@
-import "./Main.css";
-
-const Main = () => {
+const Main = () => {  
   return (
-    <div className="d-flex flex-column flex-fill main">
+    <div className="d-flex flex-column">
       <div className="msg d-flex justify-content-center align-items-center">
         <p>O que fazemos com o planeta hoje determinará o nosso amanhã.</p>
       </div>
