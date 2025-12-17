@@ -1,11 +1,14 @@
 type NavegacaoProps = {
     titulo?: string
 };
+import { useNavigate } from "react-router-dom";
 
 const Navegacao = ({titulo = "padrao"}:NavegacaoProps) => {
+    const navigate = useNavigate()
+
     return (
         <nav className="navbar justify-content-between mb-3 px-4">
-            <a className="navbar-brand" href="">
+            <a className="navbar-brand" href="" onClick={()=>navigate("/")}>
                 <img src="src/assets/arrow-left-solid-full.svg" alt="" width={35}/>
             </a>
             <h2 className="m-0">
@@ -17,7 +20,10 @@ const Navegacao = ({titulo = "padrao"}:NavegacaoProps) => {
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a className="dropdown-item" href="#">
+                        <a className="dropdown-item" href="" onClick={()=>navigate("/perfil")}>
+                            Perfil
+                        </a>
+                        <a className="dropdown-item" href="" onClick={()=>navigate("/logout")}>
                             Sair
                         </a>
                     </li>

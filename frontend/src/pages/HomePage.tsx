@@ -1,4 +1,4 @@
-import Header from "../components/header/Header";
+import Navegacao from "../components/nav/nav";
 import Main from "../components/main/Main";
 import Footer from "../components/footer/Footer";
 import { useSession } from "../hooks/useSession";
@@ -11,7 +11,7 @@ const HomePage = () => {
 
     return (
         <div className="d-flex flex-column justify-content-between min-vh-100">
-            <Header />
+            <Navegacao titulo="Home" />
             <Main />
             <Footer />
         </div>
