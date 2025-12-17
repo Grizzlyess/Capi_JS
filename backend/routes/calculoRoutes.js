@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     const novoCalculo = await prisma.calculoCarbono.create({
       data: {
         userId: userId,
-        valorTotal: parseFloat(resultado),
+        valorTotal: resultado,
       },
     });
 
