@@ -1,0 +1,12 @@
+.botao {
+    background-color: green;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    height: 20vh;
+    width: 40vw;
+}
+
+.botao:hover {
+    background-color: cyan;
+    color: black;
+}
