@@ -3,8 +3,10 @@ import Navegacao from "../../components/nav/nav";
 import api from "../../services/api";
 import { useSession } from "../../hooks/useSession";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CalculadoraCarbono = () => {
+    const navigate = useNavigate();
     const { user } = useSession();
     const [EvlrM, setEvlrM] = useState(0.0);
     const [EvlrR, setEvlrR] = useState(0.0);
@@ -34,11 +36,12 @@ const CalculadoraCarbono = () => {
         } else carbKm = 0;
         const carbTotal = carbElec + carbGas + carbKm;
         sendApi(carbTotal);
+        navigate("/calcm")
     }
     return (
         <>
             <div className="py-3">
-                <Navegacao titulo="Responda as questões"/>
+                <Navegacao titulo="Responda as questões" />
 
                 <form action="" className="container">
                     {/*Energia mensal*/}

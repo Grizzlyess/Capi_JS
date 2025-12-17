@@ -1,0 +1,11 @@
+.mensagem{
+    width: 70vw;
+    min-height: 40vh;
+    padding: 50px;
+}
+dl{
+    font-size: 30px;
+}
+p{
+    font-size: 21px;
+}
