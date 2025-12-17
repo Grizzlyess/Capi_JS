@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./ListarEmpresas.css"
+import "./ListarEmpresas.css";
+import Navegacao from "../../components/nav/nav";
 
 interface Empresa {
     id: string;
@@ -29,8 +30,9 @@ const ListarEmpresas = () => {
     return (
         <>
             <div className="main emps">
+                <Navegacao titulo="Empresas" />
                 {emps.map((emp) => (
-                    <div className="card" style={{ width: "20rem" }}>
+                    <div className="card container mt-5" style={{ width: "20rem" }}>
                         <div className="card-body">
                             <div key={emp.id}>
                                 <h2 className="card-title">{emp.company_name}</h2>
