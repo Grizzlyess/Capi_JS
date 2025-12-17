@@ -1,17 +1,11 @@
+import Navegacao from "../../components/nav/nav";
 import "./CalculadoraCarbono.css"
 
 const CalculadoraCarbono = () =>{
     return (
         <>
             <div className="py-3">
-                <nav className="navbar d-flex justify-content-center position-relative mb-3">
-                    <a className="navbar-brand position-absolute start-0 ms-3" href="">
-                        <img src="src/assets/arrow-left-solid-full.svg" alt="" width={35}/>
-                    </a>
-                    <h2 className="m-0">
-                        Responda as questões
-                    </h2>
-                </nav>
+                <Navegacao titulo="Responda as questões"/>
 
                 <form action="" className="container">
                     {/*Energia mensal*/}
@@ -92,9 +86,9 @@ const CalculadoraCarbono = () =>{
                     </div>
 
                     {/*Redirecionar Calcular*/}
-                    <div className="d-grid gap-2 col-7 mx-auto">
+                    <div className="">
                         <a href="">
-                            <button type="submit" className="btn btn-success btn-lg" style={{width:"800px"}}>
+                            <button type="submit" className="btn btn-success btn-lg w-100" >
                                 Calcular
                             </button>
                         </a>

@@ -29,12 +29,12 @@ const Cadastro = () => {
     };
 
     return (
-        <main className="main d-flex justify-content-center align-items-center min-vh-100 flex-column">
+        <div className="main d-flex justify-content-center align-items-center min-vh-100 flex-column">
             <div className="logo text-center mb-3">
-                <img src="src/assets/capi.ico" alt="" />
+                <img src="src/assets/capi.svg" alt="" />
             </div>
             <div className="cadastro p-3">
-                <h4 className="mb-5">CAPI - Cadastro</h4>
+                <h3 className="mb-5">CAPI - Cadastro</h3>
                 <form onSubmit={handleSubb} className="w-100">
                     <div className="form w-100 mb-3">
                         <input
@@ -79,7 +79,7 @@ const Cadastro = () => {
                     </button>
                 </form>
             </div>
-        </main>
+        </div>
     );
 };
 export default Cadastro;

@@ -1,8 +1,12 @@
+import "./Main.css"
+
 const Main = () => {  
   return (
     <div className="d-flex flex-column">
-      <div className="msg d-flex justify-content-center align-items-center">
-        <p>O que fazemos com o planeta hoje determinará o nosso amanhã.</p>
+      <div className="msg d-flex justify-content-center align-items-center mb-5">
+        <p style={{fontSize:"1.5rem"}}>
+          O que fazemos com o planeta hoje determinará o nosso amanhã.
+        </p>
       </div>
 
       <div className="container text-center mb-3">

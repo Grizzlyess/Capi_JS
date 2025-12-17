@@ -1,7 +1,7 @@
 import HomePage from "./pages/HomePage";
-import Cadastro from "./pages/Cadastro";
-import Login from "./pages/Login";
-import ListarEmpresas from "./pages/ListarEmpresas";
+import Cadastro from "./pages/cadastro/Cadastro";
+import Login from "./pages/login/Login";
+import ListarEmpresas from "./pages/empresas/ListarEmpresas";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 

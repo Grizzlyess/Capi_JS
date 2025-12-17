@@ -4,11 +4,11 @@
 
 .login {
     background-blend-mode: soft-light;
-    background-color: rgba(0, 255, 255, 0.6);
+    background-color: rgb(173, 161, 114);
     background-image: url("./src/assets/capivara.jpg");
     background-position: center -10px;
     background-size: cover;
-    border: 4px solid rgba(80, 48, 30, 0.3);
+    border: 2px solid rgba(80, 48, 30, 0.3);
     border-radius: 2%;
     height: 65vh;
     text-shadow: #000 1px 1px;

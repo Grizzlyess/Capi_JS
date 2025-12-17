@@ -1,0 +1,41 @@
+main{
+    width: 30vw;
+    min-height: 30vh;
+    border-radius: 10px;
+    background-color: #a7975f6d;
+}
+a{
+    font-size: 25px;
+    cursor: pointer;
+}
+h3{
+    color: #ffffff;
+}
+
+.lista{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.lista li{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.lista li span{
+    width: 27px;
+    height: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lista li span img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
