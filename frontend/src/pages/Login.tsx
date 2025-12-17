@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useSession } from "../hooks/useSession";
 import "./Login.css";
 import { useState } from "react";
 
 const Login = () => {
-    const {login} = useSession();
+    const {user, login} = useSession();
     const [email, setemail] = useState("");
     const [pass, setPass] = useState("");
     const navigate = useNavigate();
@@ -12,12 +12,12 @@ const Login = () => {
         navigate("/cadastro");
     };
 
-    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleLogin = async () => {
         
         await login(email,pass)
         navigate("/");
     };
+    if(user) return <Navigate to="/"/>
 
     return (
         <div className="main d-flex justify-content-center align-items-center min-vh-100 flex-column">
@@ -26,7 +26,6 @@ const Login = () => {
             </div>
             <div className="login p-3">
                 <h3 className="mb-5">CAPI - Login</h3>
-                <form onSubmit={handleLogin}>
                     <div className="forms">
                         <div className="form mb-4">
                             <input type="email" className="form-control" placeholder="Email" onChange={(e)=> setemail(e.target.value)} />
@@ -34,7 +33,7 @@ const Login = () => {
                         <div className="form mb-5">
                             <input type="password" className="form-control" placeholder="Senha" onChange={(e)=> setPass(e.target.value)} />
                         </div>
-                        <button type="submit" className="btn logcad w-100 mb-3 mt-4">
+                        <button type="submit" className="btn logcad w-100 mb-3 mt-4" onClick={handleLogin}>
                             Login
                         </button>
                         <div className="register">
@@ -43,7 +42,6 @@ const Login = () => {
                             </p>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
     );

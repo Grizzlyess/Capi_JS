@@ -6,6 +6,10 @@ html,
 body {
   height: auto;
   margin: 0;
+  background-image: url("./src/assets/wave2.svg");
+  background-position: bottom right;
+  background-size: cover;
+  background-color: #F2D194;
 }
 
 .logcad {

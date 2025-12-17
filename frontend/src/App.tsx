@@ -2,6 +2,7 @@ import HomePage from "./pages/HomePage";
 import Cadastro from "./pages/Cadastro";
 import Login from "./pages/Login";
 import ListarEmpresas from "./pages/ListarEmpresas";
+import CalculadoraCarbono from "./pages/CalculadoraCarbono";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     {
         path: "/empresas",
         element: <ListarEmpresas />
+    },
+    {
+        path: "/calc",
+        element: <CalculadoraCarbono/>
     }
 ]);
 function App() {
