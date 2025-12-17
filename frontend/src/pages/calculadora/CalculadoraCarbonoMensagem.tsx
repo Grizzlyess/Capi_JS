@@ -3,6 +3,7 @@ import api from "../../services/api";
 import { useSession } from "../../hooks/useSession";
 import "./CalculadoraCarbonoMensagem.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface MSG {
     texto: string;
@@ -12,6 +13,7 @@ interface MSG {
 }
 
 const CalculadoraCarbonoMensagem = () => {
+    const navigate = useNavigate();
     const [msgs, setMsg] = useState<MSG[] | null>(null);
     const [msg, setTxt] = useState("");
     const [carb, setCarb] = useState(0);
@@ -57,7 +59,7 @@ const CalculadoraCarbonoMensagem = () => {
                         <p className="mb-5 text-center">
                             {msg}
                         </p>
-                        <button className="btn btn-success btn-lg">Entendi</button>
+                        <button className="btn btn-success btn-lg" onClick={()=>navigate("/perfil")}>Entendi</button>
                     </main>
                 </div>
             </div>

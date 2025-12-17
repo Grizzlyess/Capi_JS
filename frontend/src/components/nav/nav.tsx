@@ -2,9 +2,14 @@ type NavegacaoProps = {
     titulo?: string
 };
 import { useNavigate } from "react-router-dom";
+import { useSession } from "../../hooks/useSession";
 
 const Navegacao = ({titulo = "padrao"}:NavegacaoProps) => {
     const navigate = useNavigate()
+    const {logout} = useSession()
+    const handleOut = () =>{
+        logout()
+    }
 
     return (
         <nav className="navbar justify-content-between mb-3 px-4">
@@ -23,7 +28,7 @@ const Navegacao = ({titulo = "padrao"}:NavegacaoProps) => {
                         <a className="dropdown-item" href="" onClick={()=>navigate("/perfil")}>
                             Perfil
                         </a>
-                        <a className="dropdown-item" href="" onClick={()=>navigate("/logout")}>
+                        <a className="dropdown-item" href="" onClick={handleOut}>
                             Sair
                         </a>
                     </li>

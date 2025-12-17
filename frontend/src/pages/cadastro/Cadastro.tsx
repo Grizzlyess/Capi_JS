@@ -1,22 +1,28 @@
 import React, { useRef, useState } from "react";
 import "./Cadastro.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Cadastro = () => {
+    const navigate = useNavigate();
     const ipName = useRef<HTMLInputElement | null>(null);
     const ipEmail = useRef<HTMLInputElement | null>(null);
     const pass = useRef<HTMLInputElement | null>(null);
     const passck = useRef<HTMLInputElement | null>(null);
     const [err, setErr] = useState("");
-    
-    const handleApi = async () =>{
+
+    const handleApi = async () => {
         try {
-            await axios.post("api/user/",{email:ipEmail.current?.value,name:ipName.current?.value,pass:pass.current?.value})
+            await axios.post("api/user/", {
+                email: ipEmail.current?.value,
+                name: ipName.current?.value,
+                pass: pass.current?.value,
+            });
             //console.log("User Criado")
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
     const handleSubb = (e: React.FormEvent) => {
         e.preventDefault();
         if (pass.current?.value !== passck.current?.value) {
@@ -25,7 +31,8 @@ const Cadastro = () => {
         }
         setErr("");
         //console.log("Prox");
-        handleApi()
+        handleApi();
+        navigate("/login")
     };
 
     return (
