@@ -6,28 +6,16 @@ import nodemailer from 'nodemailer';
 const router = express.Router();
 const prisma = new PrismaClient();
 
-/*const transporter = nodemailer.createTransport({
-  service: 'gmail', // Usa o Gmail
-  auth: {
-    user: process.env.EMAIL_USER, // Pega do arquivo .env
-    pass: process.env.EMAIL_PASS  // Pega do arquivo .env
-  }
-});*/
-
+// --- CONFIGURAÇÃO DO GMAIL (NODEMAILER) ---
 const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',
-    port: 587,
-    secure: false,
+    service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-    tls: {
-        rejectUnauthorized: false,
-        ciphers: 'SSLv3',
-    },
+        user: process.env.EMAIL_USER, // Seu gmail real
+        pass: process.env.EMAIL_PASS  // A senha de app de 16 letras
+    }
 });
 
+// GET - Listar todos
 router.get('/', async (req, res) => {
     try {
         const users = await prisma.user.findMany({
@@ -39,7 +27,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-//buscar por email
+// GET - Buscar por email
 router.get('/by-email/:email', async (req, res) => {
     const { email } = req.params;
     try {
@@ -55,7 +43,7 @@ router.get('/by-email/:email', async (req, res) => {
     }
 });
 
-//buscar por nome
+// GET - Buscar por nome
 router.get('/by-name/:name', async (req, res) => {
     const { name } = req.params;
     try {
@@ -73,7 +61,7 @@ router.get('/by-name/:name', async (req, res) => {
     }
 });
 
-//buscar por ID
+// GET - Buscar por ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -89,7 +77,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Cadastro
+// POST - Cadastro (Com envio de email corrigido)
 router.post('/', async (req, res) => {
     try {
         const { email, name, pass } = req.body;
@@ -109,16 +97,22 @@ router.post('/', async (req, res) => {
             },
         });
 
+        // Configuração do Email de Boas-vindas
         const mailOptions = {
-            from: 'Suporte CAPI <suportecapitech@outlook.com>',
+            from: `Suporte CAPI <${process.env.EMAIL_USER}>`, // Usa o email do .env
             to: email,
             subject: 'Bem-vindo ao CAPI! 🌿',
-
             text: `Olá, ${name}! \n\nSeja muito bem-vindo(a) à CAPI. \nEstamos felizes em ter você conosco para juntos melhorar o planeta. \n\nAtt, Equipe CAPI.`,
         };
 
-        //await transporter.sendMail(mailOptions);
-        console.log(`Email de boas-vindas enviado para ${email}`);
+        // Tenta enviar o email, mas não trava o cadastro se der erro
+        try {
+            await transporter.sendMail(mailOptions);
+            console.log(`✅ Email de boas-vindas enviado para ${email}`);
+        } catch (mailError) {
+            console.error('❌ Erro ao enviar email de boas-vindas:', mailError);
+            // Não retornamos erro 500 aqui para não cancelar o cadastro do usuário
+        }
 
         res.status(201).json(newUser);
     } catch (error) {
@@ -127,7 +121,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// aqui é para se esqueceu senha
+// POST - Esqueci minha senha (Com envio corrigido)
 router.post('/forgot-pass', async (req, res) => {
     const { email } = req.body;
 
@@ -139,7 +133,6 @@ router.post('/forgot-pass', async (req, res) => {
         }
 
         const token = Math.floor(100000 + Math.random() * 900000).toString();
-
         const now = new Date();
         now.setHours(now.getHours() + 1);
 
@@ -149,9 +142,9 @@ router.post('/forgot-pass', async (req, res) => {
         });
 
         const mailOptions = {
-            from: 'suportecapitech@outlook.com>', //ORIGEM
-            to: email, //DESTINATARIO
-            subject: 'Recuperação de Senha - CAPI', // Assunto
+            from: `Suporte CAPI <${process.env.EMAIL_USER}>`, // CORRIGIDO: Usa o Gmail do .env
+            to: email,
+            subject: 'Recuperação de Senha - CAPI',
             text: `Seu código de verificação é: ${token}`,
             html: `
         <div style="font-family: Arial, sans-serif; color: #333;">
@@ -166,15 +159,16 @@ router.post('/forgot-pass', async (req, res) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log(`Email enviado para ${email}`);
+        console.log(`✅ Email de recuperação enviado para ${email}`);
+        
         res.json({ message: 'Email enviado com sucesso! Verifique sua caixa de entrada.' });
     } catch (error) {
-        console.error(error);
+        console.error('❌ Erro no forgot-pass:', error);
         res.status(500).json({ error: 'Erro ao enviar email' });
     }
 });
 
-// Aqui é para resetar a senha e enviar a senha nova
+// POST - Resetar a senha
 router.post('/reset-pass', async (req, res) => {
     const { token, newPass } = req.body;
 
@@ -207,7 +201,7 @@ router.post('/reset-pass', async (req, res) => {
     }
 });
 
-// Aqui é o LOGIN
+// POST - Login
 router.post('/login', async (req, res) => {
     const { email, pass } = req.body;
 
@@ -233,7 +227,6 @@ router.get('/login/me', (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Não autenticado' });
     }
-
     res.json(req.session.user);
 });
 
@@ -244,6 +237,7 @@ router.post('/logout', (req, res) => {
     });
 });
 
+// PUT - Atualizar usuário
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { email, name, pass } = req.body;
@@ -266,6 +260,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+// DELETE - Deletar por email
 router.delete('/by-email/:email', async (req, res) => {
     const { email } = req.params;
 
@@ -284,6 +279,7 @@ router.delete('/by-email/:email', async (req, res) => {
     }
 });
 
+// DELETE - Deletar por ID
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -296,7 +292,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-//favoritar emprea
+// PATCH - Favoritar empresa
 router.patch('/:id/favoritos/:empresaId', async (req, res) => {
     const { id, empresaId } = req.params;
 
@@ -317,7 +313,7 @@ router.patch('/:id/favoritos/:empresaId', async (req, res) => {
     }
 });
 
-// remove empresa dos favoritos
+// DELETE - Remover empresa dos favoritos
 router.delete('/:id/favoritos/:empresaId', async (req, res) => {
     const { id, empresaId } = req.params;
 
@@ -338,14 +334,14 @@ router.delete('/:id/favoritos/:empresaId', async (req, res) => {
     }
 });
 
-//Listar os favoritos
+// GET - Listar os favoritos
 router.get('/:id/favoritos', async (req, res) => {
     const { id } = req.params;
 
     try {
         const user = await prisma.user.findUnique({
             where: { id: id },
-            select: { favoritedEmpresas: true }, // pega as empresas favoritas
+            select: { favoritedEmpresas: true },
         });
 
         if (!user) {
