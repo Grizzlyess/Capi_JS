@@ -10,6 +10,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import DefaultLayout from "./defaultLayout";
 
+
 const router = createBrowserRouter([
     {
         element: <DefaultLayout />,
@@ -47,9 +48,12 @@ const router = createBrowserRouter([
                 path: "/admin",
                 element: <Admin />,
             },
-        ]
-    }
-]);
+        ],
+    },
+],
+    {
+        basename: import.meta.env.BASE_URL,
+    });
 function App() {
     return (
         <>
