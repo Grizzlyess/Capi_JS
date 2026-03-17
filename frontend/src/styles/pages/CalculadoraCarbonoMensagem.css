@@ -1,0 +1,49 @@
+/* src/styles/pages/CalculadoraCarbonoMensagem.css */
+
+.respostaPage {
+  min-height: calc(100vh - 70px);
+}
+
+.respostaCard {
+  width: 100%;
+  max-width: 480px;
+  padding: 2.2rem;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.9);
+  border: 1.5px solid #7abf92;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  backdrop-filter: blur(4px);
+}
+
+.respostaTitulo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #145c39;
+}
+
+.respostaValor {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #208944;
+}
+
+.respostaMensagem {
+  font-size: 1.1rem;
+  color: #2f4038;
+}
+
+.btnEntendi {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  background: #208944;
+  color: white;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.btnEntendi:hover {
+  background: #186c35;
+  transform: translateY(-2px);
+}

@@ -1,0 +1,72 @@
+/* src/styles/pages/Cadastro.css */
+
+.cadastroCard {
+    width: 35vw;
+    min-width: 200px;
+    padding: 2rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.9);
+    border: 1.5px solid #7abf92;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    backdrop-filter: blur(4px);
+}
+
+.cadastroLogo img {
+    width: 80px;
+}
+
+.cadastroTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #145c39;
+}
+
+.formGroup label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #cfe7d7;
+}
+
+.btnCadastro {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 10px;
+    background: #208944;
+    color: white;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.btnCadastro:hover {
+    background: #186c35;
+    transform: translateY(-2px);
+}
+
+.cadastroMsg {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #c0392b;
+}
+
+.cadastroLogin {
+    font-size: 0.9rem;
+}
+
+.linkBtn {
+    border: none;
+    background: none;
+    color: #208944;
+    font-weight: 700;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.linkBtn:hover {
+    text-decoration: underline;
+}

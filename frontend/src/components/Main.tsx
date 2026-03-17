@@ -1,4 +1,4 @@
-import "./Main.css"
+import "../styles/components/Main.css"
 
 const Main = () => {  
   return (

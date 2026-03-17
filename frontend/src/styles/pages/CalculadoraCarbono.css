@@ -1,0 +1,49 @@
+/* src/styles/pages/CalculadoraCarbono.css */
+
+.calcPage {
+    min-height: calc(100vh - 70px);
+}
+
+.calcCard {
+    width: 100%;
+    max-width: 450px;
+    padding: 2rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.9);
+    border: 1.5px solid #7abf92;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    backdrop-filter: blur(4px);
+}
+
+.calcTitle {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #145c39;
+}
+
+.calcGroup label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #cfe7d7;
+}
+
+.btnCalcular {
+    width: 100%;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 10px;
+    background: #208944;
+    color: white;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.btnCalcular:hover {
+    background: #186c35;
+    transform: translateY(-2px);
+}

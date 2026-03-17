@@ -8,40 +8,47 @@ import CalculadoraCarbonoMensagem from "./pages/calculadora/CalculadoraCarbonoMe
 import Admin from "./pages/admin/Admin";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import DefaultLayout from "./defaultLayout";
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: <HomePage />,
-    },
-    {
-        path: "/login",
-        element: <Login />,
-    },
-    {
-        path: "/cadastro",
-        element: <Cadastro />,
-    },
-    {
-        path: "/empresas",
-        element: <ListarEmpresas />,
-    },
-    {
-        path: "/calc",
-        element: <CalculadoraCarbono />,
-    },
-    {
-        path: "/calcm",
-        element: <CalculadoraCarbonoMensagem />,
-    },
-    {
-        path: "/perfil",
-        element: <UsuarioLogado />,
-    },
-    {
-        path: "/admin",
-        element: <Admin />,
-    },
+        element: <DefaultLayout />,
+        children: [
+
+            {
+                path: "/",
+                element: <HomePage />,
+            },
+            {
+                path: "/login",
+                element: <Login />,
+            },
+            {
+                path: "/cadastro",
+                element: <Cadastro />,
+            },
+            {
+                path: "/empresas",
+                element: <ListarEmpresas />,
+            },
+            {
+                path: "/calc",
+                element: <CalculadoraCarbono />,
+            },
+            {
+                path: "/calcm",
+                element: <CalculadoraCarbonoMensagem />,
+            },
+            {
+                path: "/perfil",
+                element: <UsuarioLogado />,
+            },
+            {
+                path: "/admin",
+                element: <Admin />,
+            },
+        ]
+    }
 ]);
 function App() {
     return (

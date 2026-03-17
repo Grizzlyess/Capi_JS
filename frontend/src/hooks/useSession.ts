@@ -1,18 +1,24 @@
-// hooks/useSession.ts
+// src/hooks/useSession.ts
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
 export interface User {
-    id: number;
+    id: string;
     email: string;
+    name?: string;
 }
 
 export function useSession() {
+
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
-    async function login(email: string, password: string) {
-        const { data } = await api.post<User>("/user/login", { email: email, pass: password });
+    async function login(email: string, pass: string) {
+        const { data } = await api.post<User>("/user/login", {
+            email: email,
+            pass: pass
+        });
+
         setUser(data);
     }
 
@@ -23,7 +29,7 @@ export function useSession() {
 
     useEffect(() => {
         api.get<User>("/user/login/me")
-            .then((res) => setUser(res.data))
+            .then(res => setUser(res.data))
             .catch(() => setUser(null))
             .finally(() => setLoading(false));
     }, []);
@@ -32,6 +38,6 @@ export function useSession() {
         user,
         loading,
         login,
-        logout,
+        logout
     };
 }

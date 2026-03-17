@@ -1,0 +1,16 @@
+
+.defaultLayout {
+    min-height: 100vh;
+}
+
+.layoutMain {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.layoutFooter {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #2f4038;
+}

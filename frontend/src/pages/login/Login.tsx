@@ -1,62 +1,88 @@
-import { Navigate, useNavigate } from "react-router-dom";
-import { useSession } from "../../hooks/useSession";
-import "./Login.css";
+// src/pages/user/Login.tsx
 import { useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useSession } from "../../hooks/useSession";
+import "./../../styles/pages/Login.css";
 
 const Login = () => {
-    const { user, login } = useSession();
-    const [email, setemail] = useState("");
-    const [pass, setPass] = useState("");
     const navigate = useNavigate();
-    const toCad = () => {
-        navigate("/cadastro");
-    };
+    const { user, login } = useSession();
 
-    const handleLogin = async () => {
-        await login(email, pass);
-        navigate("/");
-    };
+    const [email, setEmail] = useState("");
+    const [pass, setPass] = useState("");
+    const [erro, setErro] = useState("");
+
     if (user) return <Navigate to="/" />;
 
+    const handleLogin = async () => {
+        try {
+            setErro("");
+            await login(email, pass);
+            navigate("/");
+        } catch {
+            setErro("Email ou senha inválidos.");
+        }
+    };
+
     return (
-        <div className="main d-flex justify-content-center align-items-center min-vh-100 flex-column">
-            <div className="logo text-center mb-3">
-                <img src="src/assets/capi.svg" alt="" />
-            </div>
-            <div className="login p-3">
-                <h3 className="mb-5">CAPI - Login</h3>
-                <div className="forms w-100">
-                    <div className="form mb-4">
-                        <input
-                            type="email"
-                            className="form-control"
-                            placeholder="Email"
-                            onChange={(e) => setemail(e.target.value)}
-                        />
-                    </div>
-                    <div className="form mb-5">
-                        <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Senha"
-                            onChange={(e) => setPass(e.target.value)}
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="btn logcad w-100 mb-3 mt-4"
-                        onClick={handleLogin}
-                    >
-                        Login
-                    </button>
-                    <div className="register justify-content-center">
-                        <p>
-                            Não tem conta? <a onClick={toCad}>Registre-se</a>
-                        </p>
-                    </div>
+        <div className="loginPage d-flex flex-column min-vh-100 justify-content-center align-items-center">
+
+            <div className="loginCard">
+
+                <div className="loginLogo mb-3 text-center">
+                    <img src="src/assets/capi.svg" alt="CAPI" />
                 </div>
+
+                <h2 className="loginTitle mb-4 text-center">
+                    CAPI - Login
+                </h2>
+
+                <div className="formGroup mb-3">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        className="form-control"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+
+                <div className="formGroup mb-4">
+                    <label>Senha</label>
+                    <input
+                        type="password"
+                        className="form-control"
+                        value={pass}
+                        onChange={(e) => setPass(e.target.value)}
+                    />
+                </div>
+
+                {erro && (
+                    <p className="loginError">
+                        {erro}
+                    </p>
+                )}
+
+                <button
+                    className="btnLogin"
+                    onClick={handleLogin}
+                >
+                    Entrar
+                </button>
+
+                <div className="loginRegister mt-3 text-center">
+                    <span>Não tem conta?</span>
+                    <button
+                        className="linkBtn"
+                        onClick={() => navigate("/cadastro")}
+                    >
+                        Registrar-se
+                    </button>
+                </div>
+
             </div>
         </div>
     );
 };
+
 export default Login;

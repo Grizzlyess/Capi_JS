@@ -20,4 +20,5 @@ export default defineConfig({
             },
         },
     },
+    base: '/Capi_JS/'
 });

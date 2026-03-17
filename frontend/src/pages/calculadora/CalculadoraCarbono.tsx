@@ -1,171 +1,122 @@
-import "./CalculadoraCarbono.css";
-import Navegacao from "../../components/nav/nav";
-import api from "../../services/api";
-import { useSession } from "../../hooks/useSession";
+// src/pages/calculadora/CalculadoraCarbono.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navegacao from "../../components/nav";
+import api from "../../services/api";
+import { useSession } from "../../hooks/useSession";
+import "./../../styles/pages/CalculadoraCarbono.css";
 
 const CalculadoraCarbono = () => {
     const navigate = useNavigate();
     const { user } = useSession();
-    const [EvlrM, setEvlrM] = useState(0.0);
-    const [EvlrR, setEvlrR] = useState(0.0);
-    const [QtdB, setQtdB] = useState(0.0);
-    const [KmM, setKmM] = useState(0.0);
-    const [Vp, setVp] = useState("");
-    const [Cbp, setCbp] = useState("");
 
-    function sendApi(vlr: number) {
-        if (user) api.post("/calculo/", { userId: user.id, resultado: vlr });
-        else return console.log("Não logado");
-        console.log("Calculo Posted!");
-    }
+    const [energia, setEnergia] = useState(0);
+    const [precoKwh, setPrecoKwh] = useState(0);
+    const [botijoes, setBotijoes] = useState(0);
+    const [kmMes, setKmMes] = useState(0);
+    const [tipoVeiculo, setTipoVeiculo] = useState("gasolina");
 
-    function Calcular() {
-        const carbElec = (EvlrM / EvlrR) * 0.0385;
-        const carbGas = QtdB * 2.938;
-        let carbKm = 0.0;
-        if (Vp == "carro") {
-            if (Cbp == "diesel") carbKm = (KmM / 12.3) * 2.44;
-            else if (Cbp == "etanol") carbKm = (KmM / 11.4) * 1.5;
-            else if (Cbp == "gasolina") carbKm = (KmM / 17.5) * 2.19;
-            else carbKm = (KmM / 16) * 1.92;
-        } else if (Vp === "moto") {
-            if (Cbp == "etanol") carbKm = (KmM / 24.7) * 1.5;
-            else carbKm = (KmM / 35) * 2.19;
-        } else carbKm = 0;
-        const carbTotal = carbElec + carbGas + carbKm;
-        sendApi(carbTotal);
-        navigate("/calcm")
-    }
+    const calcular = async () => {
+        if (!user) return;
+
+        const energiaEmissao = energia * precoKwh * 0.0005;
+        const gasEmissao = botijoes * 3;
+        const veiculoEmissao =
+            tipoVeiculo === "gasolina"
+                ? kmMes * 0.192
+                : tipoVeiculo === "diesel"
+                ? kmMes * 0.171
+                : kmMes * 0.120;
+
+        const total = energiaEmissao + gasEmissao + veiculoEmissao;
+
+        try {
+            await api.post("/calculo", {
+                userId: user.id,
+                resultado: total,
+            });
+
+            navigate("/resultado");
+        } catch {
+            console.log("Erro ao salvar cálculo");
+        }
+    };
+
     return (
         <>
-            <div className="py-3">
-                <Navegacao titulo="Responda as questões" />
+            <Navegacao titulo="Pegada de Carbono" />
 
-                <form action="" className="container">
-                    {/*Energia mensal*/}
-                    <div className="mb-4">
-                        <label htmlFor="" className="form-label">
-                            Informe o valor mensal da sua conta de energia
-                        </label>
+            <div className="calcPage d-flex flex-grow-1 justify-content-center align-items-center">
+                <main className="calcCard">
+
+                    <h2 className="calcTitle mb-4 text-center">
+                        Calcule sua Pegada de Carbono
+                    </h2>
+
+                    <div className="calcGroup mb-3">
+                        <label>Gasto mensal com energia (R$)</label>
                         <input
                             type="number"
+                            value={energia}
+                            onChange={(e) => setEnergia(Number(e.target.value))}
                             className="form-control"
-                            min={0}
-                            onChange={(e) => setEvlrM(parseFloat(e.target.value))}
                         />
                     </div>
 
-                    {/*Preço do kWh - região*/}
-                    <div className="mb-4">
-                        <label htmlFor="" className="form-label">
-                            Informe o preço do kWh na sua região
-                        </label>
+                    <div className="calcGroup mb-3">
+                        <label>Preço do kWh (R$)</label>
                         <input
                             type="number"
+                            value={precoKwh}
+                            onChange={(e) => setPrecoKwh(Number(e.target.value))}
                             className="form-control"
-                            min={0}
-                            onChange={(e) => setEvlrR(parseFloat(e.target.value))}
                         />
                     </div>
 
-                    {/*Qtd botijões - mês*/}
-                    <div className="mb-4">
-                        <label htmlFor="" className="form-label">
-                            Informe a quantidade de botijões de gas usados no mês
-                        </label>
+                    <div className="calcGroup mb-3">
+                        <label>Botijões de gás por mês</label>
                         <input
                             type="number"
+                            value={botijoes}
+                            onChange={(e) => setBotijoes(Number(e.target.value))}
                             className="form-control"
-                            min={0}
-                            onChange={(e) => setQtdB(parseFloat(e.target.value))}
                         />
                     </div>
 
-                    {/*Tipo de veículo*/}
-                    <div className="mb-4">
-                        <label htmlFor="" className="form-label">
-                            Selecione seu tipo de veículo pessoal mais usado
-                        </label>
+                    <div className="calcGroup mb-3">
+                        <label>Tipo de veículo</label>
                         <select
-                            className="form-select"
-                            onChange={(e) => {
-                                setVp(e.target.value);
-                                setCbp("");
-                            }}
+                            value={tipoVeiculo}
+                            onChange={(e) => setTipoVeiculo(e.target.value)}
+                            className="form-control"
                         >
-                            <option selected>Escolha seu veículo</option>
-                            <option value="carro">Carro</option>
-                            <option value="moto">Moto</option>
-                            <option value="bike">Bike</option>
+                            <option value="gasolina">Gasolina</option>
+                            <option value="diesel">Diesel</option>
+                            <option value="etanol">Etanol</option>
                         </select>
                     </div>
-                    {
-                        /*Tipo de combustível - carro*/
-                        Vp === "carro" && (
-                            <div className="mb-4">
-                                <label htmlFor="" className="form-label">
-                                    Selecione o tipo de combustível do seu carro
-                                </label>
-                                <select
-                                    className="form-select"
-                                    onChange={(e) => setCbp(e.target.value)}
-                                >
-                                    <option selected>Selecione o combustível</option>
-                                    <option value="diesel">Diesel</option>
-                                    <option value="etanol">Etanol</option>
-                                    <option value="gasolina">Gasolina</option>
-                                    <option value="gnv">GNV</option>
-                                </select>
-                            </div>
-                        )
-                    }
-                    {
-                        /*Tipo de combustível - moto*/
-                        Vp === "moto" && (
-                            <div className="mb-4">
-                                <label htmlFor="" className="form-label">
-                                    Selecione o tipo de combustível da sua moto
-                                </label>
-                                <select className="form-select">
-                                    <option selected>Selecione o combustível</option>
-                                    <option value="etanol">Etanol</option>
-                                    <option value="gasolina">Gasolina</option>
-                                </select>
-                            </div>
-                        )
-                    }
 
-                    {/*>Quilômetros que você anda por mês*/}
-                    <div className="mb-4">
-                        <label htmlFor="" className="form-label">
-                            Informe quantos quilômetros você anda por mês
-                        </label>
+                    <div className="calcGroup mb-4">
+                        <label>Km rodados por mês</label>
                         <input
                             type="number"
+                            value={kmMes}
+                            onChange={(e) => setKmMes(Number(e.target.value))}
                             className="form-control"
-                            min={0}
-                            onChange={(e) => setKmM(parseFloat(e.target.value))}
                         />
                     </div>
 
-                    {/*Redirecionar Calcular*/}
-                    <div className="">
-                        <a href="">
-                            <button
-                                type="submit"
-                                className="btn btn-success btn-lg w-100"
-                                style={{ width: "800px" }}
-                                onClick={Calcular}
-                            >
-                                Calcular
-                            </button>
-                        </a>
-                    </div>
-                </form>
+                    <button
+                        className="btnCalcular"
+                        onClick={calcular}
+                    >
+                        Calcular Pegada
+                    </button>
+
+                </main>
             </div>
         </>
     );
 };
+
 export default CalculadoraCarbono;

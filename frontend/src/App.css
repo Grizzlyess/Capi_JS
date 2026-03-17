@@ -7,10 +7,12 @@ html,
 body {
     height: auto;
     margin: 0;
-    background-image: url("./src/assets/grama3.svg");
-    background-position: center;
+    background-color: #e6ddb0;
+    background-image: url("src/assets/grama3.svg");
+    background-repeat: no-repeat;
     background-size: cover;
-    background-color: #f5e5b1;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 .logcad {
