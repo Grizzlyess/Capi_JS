@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => ({
     server: {
         proxy: {
             "/api": {
-                target: "http://localhost:8080",
+                target: "https://capi-js.onrender.com",
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/api/, ""),

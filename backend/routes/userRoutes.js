@@ -293,12 +293,31 @@ router.delete('/by-email/:email', async (req, res) => {
 // DELETE - Deletar por ID
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
+
     try {
-        await prisma.user.delete({
-            where: { id: id },
+        await prisma.calculoCarbono.deleteMany({
+            where: { userId: id },
         });
-        res.json({ Info: 'Usuario deletado!' });
+
+        await prisma.user.update({
+            where: { id },
+            data: {
+                favoritedEmpresas: {
+                    set: [],
+                },
+            },
+        });
+
+        await prisma.user.delete({
+            where: { id },
+        });
+
+        req.session.destroy(() => {
+            res.clearCookie('sessionId');
+            res.json({ info: 'Usuário deletado com sucesso!' });
+        });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Não foi possível deletar o usuário' });
     }
 });
