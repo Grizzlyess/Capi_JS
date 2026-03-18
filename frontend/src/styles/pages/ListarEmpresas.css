@@ -3,8 +3,8 @@
 }
 
 .catalogo-wrapper {
-    width: min(1200px, 92%);
-    margin: 2rem auto 3rem;
+    width: min(1500px, 92%);
+    margin: 2rem auto;
     padding: 1.5rem;
     background-color: rgba(255, 255, 255, 0.82);
     border-radius: 18px;
@@ -72,11 +72,16 @@
     min-height: 220px;
 }
 
+.cardEmp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
 .cardEmp-title {
-    font-size: 1.7rem;
-    line-height: 1.15;
-    margin: 0 2.5rem 1rem 0;
-    word-break: break-word;
+    margin: 0;
+    flex: 1;
 }
 
 .cardEmp-content {
@@ -91,9 +96,7 @@
 }
 
 .favorito-btn {
-    position: absolute;
-    top: 0.8rem;
-    right: 0.9rem;
+    margin: 0 auto;
     border: none;
     background: transparent;
     font-size: 2rem;

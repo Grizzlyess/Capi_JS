@@ -48,7 +48,7 @@ const UsuarioLogado = () => {
                     <hr />
 
                     <ul className="lista">
-                        
+
                         <li className="linkUser mb-3" onClick={() => navigate("/calcm")}>
                             <span className="iconBox">
                                 <img src="src/assets/pegada.png" alt="" />
@@ -70,6 +70,12 @@ const UsuarioLogado = () => {
                             <span>Listar Empresas</span>
                         </li>
                     </ul>
+                    <li className="linkUser mb-3" onClick={() => navigate("/perfilConf")}>
+                        <span className="iconBox">
+                            ⚙️
+                        </span>
+                        <span>Configurar Perfil</span>
+                    </li>
                 </main>
             </div>
         </div>

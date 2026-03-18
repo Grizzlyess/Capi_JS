@@ -1,10 +1,18 @@
-// src/pages/Home.tsx
 import { useNavigate } from "react-router-dom";
 import "../styles/pages/HomePage.css";
 import Navegacao from "../components/nav";
+import capiLogo from "../assets/capi.svg";
+import { useUltimoCalculo } from "../hooks/useCalculos";
+import { useCarbonoResumo } from "../hooks/useCarbonoResumo";
 
 const Home = () => {
     const navigate = useNavigate();
+    const { ultimoCalculo, dataCalculo } = useUltimoCalculo();
+    const { msg } = useCarbonoResumo();
+
+    const dataFormatada = dataCalculo
+        ? new Date(dataCalculo).toLocaleDateString("pt-BR")
+        : "Sem data";
 
     return (
         <div className="homePage d-flex flex-column">
@@ -13,7 +21,7 @@ const Home = () => {
             <main className="homeMain d-flex flex-column align-items-center flex-grow-1">
                 <div className="homeHero text-center">
                     <img
-                        src="src/assets/capi.svg"
+                        src={capiLogo}
                         alt="CAPI"
                         className="homeLogo mb-3"
                     />
@@ -27,9 +35,14 @@ const Home = () => {
                 <section className="homeGrid">
                     <div className="homeCard">
                         <h2 className="homeCardTitle">📊 Último Cálculo</h2>
-                        <p className="homeDate">Feito em 06/03/2026</p>
-                        <p className="homeText">
-                            Você está no caminho certo para reduzir seus impactos!
+                        <p className="homeDate">{dataFormatada}</p>
+                        <p className="calcValueHome">
+                            {ultimoCalculo !== null
+                                ? `${ultimoCalculo.toFixed(2)} t CO₂`
+                                : "Nenhum cálculo"}
+                        </p>
+                        <p className="respostaMensagem mb-5">
+                            {msg || "Calcule sua Pegada de Carbono"}
                         </p>
                     </div>
 
@@ -47,17 +60,32 @@ const Home = () => {
                     </div>
                 </section>
 
-                <section className="homeWideCard">
-                    <h2 className="homeCardTitle">🔎 Radar de Sustentabilidade</h2>
-                    <p className="homeText">
-                        Descubra se as empresas que você consome possuem metas validadas pela SBTi.
-                    </p>
-                    <button
-                        className="homeBtnSecondary"
-                        onClick={() => navigate("/empresas")}
-                    >
-                        Consultar Empresas
-                    </button>
+                <section className="homeGrid">
+                    <div className="homeCard">
+                        <h2 className="homeCardTitle">🔎 Radar de Sustentabilidade</h2>
+                        <p className="homeText">
+                            Descubra se as empresas que você consome possuem metas validadas pela SBTi.
+                        </p>
+                        <button
+                            className="homeBtnSecondary"
+                            onClick={() => navigate("/empresas")}
+                        >
+                            Consultar Empresas
+                        </button>
+                    </div>
+
+                    <div className="homeCard">
+                        <h2 className="homeCardTitle">🛒 Catálogo de Produtos</h2>
+                        <p className="homeText">
+                            Pesquise produtos e veja o ecoscore de cada item.
+                        </p>
+                        <button
+                            className="homeBtnSecondary"
+                            onClick={() => navigate("/produtos")}
+                        >
+                            Consultar Produtos
+                        </button>
+                    </div>
                 </section>
             </main>
         </div>

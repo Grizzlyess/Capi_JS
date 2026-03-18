@@ -131,16 +131,17 @@ const ListarEmpresas = () => {
 
                             return (
                                 <article className="cardEmp" key={emp.id}>
-                                    <button
-                                        type="button"
-                                        className={`favorito-btn ${favorita ? "ativo" : ""}`}
-                                        onClick={() => toggleFavorito(emp.id)}
-                                        title={favorita ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-                                    >
-                                        {favorita ? "★" : "☆"}
-                                    </button>
+                                    <div className="cardEmp-header">
+                                        <h2 className="cardEmp-title">{emp.company_name}</h2>
 
-                                    <h2 className="cardEmp-title">{emp.company_name}</h2>
+                                        <button
+                                            type="button"
+                                            className={`favorito-btn ${favorita ? "ativo" : ""}`}
+                                            onClick={() => toggleFavorito(emp.id)}
+                                        >
+                                            {favorita ? "★" : "☆"}
+                                        </button>
+                                    </div>
 
                                     <div className="cardEmp-content">
                                         <p><strong>País:</strong> {emp.location || "Não informado"}</p>

@@ -244,19 +244,29 @@ router.put('/:id', async (req, res) => {
     const { email, name, pass } = req.body;
 
     try {
-        const dataToUpdate = { email, name };
+        const dataToUpdate = {
+            email,
+            name,
+        };
 
         if (pass) {
             dataToUpdate.pass = await bcrypt.hash(pass, 10);
         }
 
         const updatedUser = await prisma.user.update({
-            where: { id: id },
+            where: { id },
             data: dataToUpdate,
         });
 
+        req.session.user = {
+            id: updatedUser.id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+        };
+
         res.json(updatedUser);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Não foi possível atualizar o usuário' });
     }
 });

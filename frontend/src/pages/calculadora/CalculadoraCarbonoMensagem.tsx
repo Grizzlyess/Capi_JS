@@ -5,6 +5,7 @@ import Navegacao from "../../components/nav";
 import api from "../../services/api";
 import { useSession } from "../../hooks/useSession";
 import "./../../styles/pages/CalculadoraCarbonoMensagem.css";
+import { useCarbonoResumo } from "../../hooks/useCarbonoResumo";
 
 interface MSG {
   texto: string;
@@ -15,58 +16,7 @@ interface MSG {
 
 const CalculadoraCarbonoMensagem = () => {
   const navigate = useNavigate();
-  const { user } = useSession();
-
-  const [msgs, setMsgs] = useState<MSG[]>([]);
-  const [msg, setMsg] = useState("");
-  const [carb, setCarb] = useState(0);
-
-  // Buscar último cálculo
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchCarb = async () => {
-      try {
-        const resp = await api.get(`/calculo/user/${user.id}`);
-        const ultimo = resp.data[0];
-
-        if (ultimo) {
-          setCarb(ultimo.valorTotal);
-        }
-      } catch {
-        console.log("Erro ao buscar pegada de carbono");
-      }
-    };
-
-    fetchCarb();
-  }, [user]);
-
-  // Buscar mensagens
-  useEffect(() => {
-    const fetchMsg = async () => {
-      try {
-        const resp = await api.get("/mensagem");
-        setMsgs(resp.data);
-      } catch {
-        console.log("Erro ao buscar mensagens");
-      }
-    };
-
-    fetchMsg();
-  }, []);
-
-  // Selecionar mensagem correta
-  useEffect(() => {
-    if (!msgs.length) return;
-
-    const encontrada = msgs.find(
-      (m) => carb >= m.min && carb <= m.max
-    );
-
-    if (encontrada) {
-      setMsg(encontrada.texto);
-    }
-  }, [carb, msgs]);
+  const { carb, msg } = useCarbonoResumo();
 
   return (
     <>
@@ -84,7 +34,7 @@ const CalculadoraCarbonoMensagem = () => {
           </div>
 
           <p className="respostaMensagem mb-5">
-            {msg || "Calculando impacto..."}
+            {msg || "Calcule sua Pegada de Carbono"}
           </p>
 
           <button

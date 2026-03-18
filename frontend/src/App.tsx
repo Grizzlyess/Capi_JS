@@ -9,6 +9,8 @@ import Admin from "./pages/admin/Admin";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import DefaultLayout from "./defaultLayout";
+import Produtos from "./pages/produtos/produtos";
+import UserConf from "./pages/userConf/userConf";
 
 
 const router = createBrowserRouter([
@@ -45,8 +47,16 @@ const router = createBrowserRouter([
                 element: <UsuarioLogado />,
             },
             {
+                path: "/perfilConf",
+                element: <UserConf />,
+            },
+            {
                 path: "/admin",
                 element: <Admin />,
+            },
+            {
+                path: "/produtos",
+                element: <Produtos />,
             },
         ],
     },
