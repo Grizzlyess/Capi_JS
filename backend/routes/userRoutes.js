@@ -355,4 +355,22 @@ router.get('/:id/favoritos', async (req, res) => {
     }
 });
 
+router.patch('/promote-admin', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+        const updatedUser = await prisma.user.update({
+            where: { email },
+            data: { role: "ADMIN"},
+        });
+        res.json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao promover usuário a admin' });
+    }
+});
+
 export default router;
