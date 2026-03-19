@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 app.use(
     cors({
-        origin: ['http://localhost:5173','https://grizzlyess.github.io/Capi_JS/'],
+        origin: ['http://localhost:5173','https://grizzlyess.github.io'],
         credentials: true,
     })
 );
