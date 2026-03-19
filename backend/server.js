@@ -19,6 +19,8 @@ app.use(
 
 app.use(express.json());
 
+app.set('trust proxy', 1); 
+
 app.use(
     session({
         name: 'sessionId',
@@ -27,7 +29,8 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: false, // true em produção (https)
+            secure: true, // 2. AGORA É TRUE! Pois estamos em HTTPS no Render
+            sameSite: 'none', // 3. OBRIGATÓRIO! Libera o cookie para viajar do Render para o GitHub Pages
             maxAge: 1000 * 60 * 60, // 1h
         },
     })
