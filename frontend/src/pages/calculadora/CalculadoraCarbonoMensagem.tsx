@@ -1,18 +1,8 @@
-// src/pages/calculadora/CalculadoraCarbonoMensagem.tsx
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navegacao from "../../components/nav";
-import api from "../../services/api";
-import { useSession } from "../../hooks/useSession";
 import "./../../styles/pages/CalculadoraCarbonoMensagem.css";
 import { useCarbonoResumo } from "../../hooks/useCarbonoResumo";
 
-interface MSG {
-  texto: string;
-  nivel: string;
-  min: number;
-  max: number;
-}
 
 const CalculadoraCarbonoMensagem = () => {
   const navigate = useNavigate();
