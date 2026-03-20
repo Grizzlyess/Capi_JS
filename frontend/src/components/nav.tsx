@@ -1,31 +1,32 @@
-type NavegacaoProps = {
-    titulo?: string
-};
-
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../hooks/useSession";
-import "../styles/components/NavBar.css"
-import setaIcon from "@/assets/arrow-left-solid-full.svg"
+import "../styles/components/NavBar.css";
+import setaIcon from "@/assets/arrow-left-solid-full.svg";
+
+type NavegacaoProps = {
+    titulo?: string;
+};
 
 const Navegacao = ({ titulo = "padrao" }: NavegacaoProps) => {
-    const navigate = useNavigate()
-    const { user } = useSession()
-    const { logout } = useSession()
+    const navigate = useNavigate();
+    const { user, logout } = useSession();
 
-    const handleOut = () => {
-        logout()
-        navigate('/login')
-    }
+    const handleOut = async () => {
+        await logout();
+        navigate("/login");
+    };
 
     return (
         <nav className="navbar justify-content-between mb-3 px-4">
-            <a className="navbar-brand" href="" onClick={() => navigate("/")}>
+            <button
+                type="button"
+                className="navbar-brand border-0 bg-transparent p-0"
+                onClick={() => navigate("/")}
+            >
                 <img src={setaIcon} alt="" width={35} />
-            </a>
+            </button>
 
-            <h2 className="titulo m-0">
-                {titulo}
-            </h2>
+            <h2 className="titulo m-0">{titulo}</h2>
 
             <div className="btn-group">
                 <button
@@ -39,21 +40,21 @@ const Navegacao = ({ titulo = "padrao" }: NavegacaoProps) => {
 
                 <ul className="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a
+                        <button
+                            type="button"
                             className="dropdown-item"
-                            href=""
                             onClick={() => navigate("/perfil")}
                         >
                             {user?.name}
-                        </a>
+                        </button>
 
-                        <a
+                        <button
+                            type="button"
                             className="dropdown-item"
-                            href=""
                             onClick={handleOut}
                         >
                             Sair
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>

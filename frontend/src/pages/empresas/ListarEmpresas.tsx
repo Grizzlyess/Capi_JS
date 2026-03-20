@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./../../styles/pages/ListarEmpresas.css";
 import Navegacao from "../../components/nav";
 import { useSession } from "../../hooks/useSession";
@@ -36,7 +36,7 @@ const ListarEmpresas = () => {
             setLoading(true);
             setErro("");
 
-            const resp = await axios.get<ApiResp>(`/api/empresa?page=${currentPage}`);
+            const resp = await api.get<ApiResp>(`/empresa?page=${currentPage}`);
             setEmp(resp.data.data ?? []);
             setPage(resp.data.page ?? 1);
             setTotalPages(resp.data.totalPages ?? 1);
@@ -52,7 +52,7 @@ const ListarEmpresas = () => {
         if (!user) return;
 
         try {
-            const resp = await axios.get<Empresa[]>(`/api/user/${user.id}/favoritos`);
+            const resp = await api.get<Empresa[]>(`/user/${user.id}/favoritos`);
             setFavoritos((resp.data ?? []).map((emp) => emp.id));
         } catch (error) {
             console.error(error);
@@ -77,10 +77,10 @@ const ListarEmpresas = () => {
 
         try {
             if (jaEhFavorita) {
-                await axios.delete(`/api/user/${user.id}/favoritos/${empresaId}`);
+                await api.delete(`/user/${user.id}/favoritos/${empresaId}`);
                 setFavoritos((prev) => prev.filter((id) => id !== empresaId));
             } else {
-                await axios.patch(`/api/user/${user.id}/favoritos/${empresaId}`);
+                await api.patch(`/user/${user.id}/favoritos/${empresaId}`);
                 setFavoritos((prev) => [...prev, empresaId]);
             }
         } catch (error) {

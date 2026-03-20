@@ -1,4 +1,4 @@
-import axios from "axios"
+import api from "../../services/api"
 import Navegacao from "../../components/nav"
 import "./../../styles/pages/Admin.css"
 import { useEffect, useState } from "react"
@@ -72,7 +72,7 @@ const Admin = () => {
     const fetchUsers = async () => {
         try {
             setLoadingUsers(true)
-            const resp = await axios.get<User[]>("/api/user")
+            const resp = await api.get<User[]>("/user")
             setUsers(resp.data)
         } catch (error) {
             console.error(error)
@@ -86,7 +86,7 @@ const Admin = () => {
     const fetchEmpresas = async () => {
         try {
             setLoadingEmpresas(true)
-            const resp = await axios.get<EmpresaResponse>("/api/empresa?page=1")
+            const resp = await api.get<EmpresaResponse>("/empresa?page=1")
             setEmpresas(resp.data.data)
         } catch (error) {
             console.error(error)
@@ -100,7 +100,7 @@ const Admin = () => {
     const fetchMensagens = async () => {
         try {
             setLoadingMensagens(true)
-            const resp = await axios.get<Mensagem[]>("/api/mensagem")
+            const resp = await api.get<Mensagem[]>("/mensagem")
             setMensagensCalc(resp.data)
         } catch (error) {
             console.error(error)
@@ -119,7 +119,7 @@ const Admin = () => {
 
     const deleteUser = async (id: string) => {
         try {
-            await axios.delete(`/api/user/${id}`)
+            await api.delete(`/user/${id}`)
             setMensagem("Usuário removido com sucesso.")
             fetchUsers()
         } catch (error) {
@@ -151,10 +151,10 @@ const Admin = () => {
             }
 
             if (empresaForm.id) {
-                await axios.put(`/api/empresa/${empresaForm.id}`, payload)
+                await api.put(`/empresa/${empresaForm.id}`, payload)
                 setMensagem("Empresa atualizada com sucesso.")
             } else {
-                await axios.post("/api/empresa", payload)
+                await api.post("/empresa", payload)
                 setMensagem("Empresa cadastrada com sucesso.")
             }
 
@@ -190,7 +190,7 @@ const Admin = () => {
 
     const deletarEmpresa = async (id: string) => {
         try {
-            await axios.delete(`/api/empresa/${id}`)
+            await api.delete(`/empresa/${id}`)
             setMensagem("Empresa deletada com sucesso.")
             fetchEmpresas()
         } catch (error) {
@@ -205,7 +205,7 @@ const Admin = () => {
         e.preventDefault()
 
         try {
-            await axios.patch("/api/user/promote-admin", { email: adminEmail })
+            await api.patch("/user/promote-admin", { email: adminEmail })
             setMensagem("Administrador adicionado com sucesso.")
             setAdminEmail("")
         } catch (error) {
@@ -238,10 +238,10 @@ const Admin = () => {
             }
 
             if (mensagemForm.id) {
-                await axios.put(`/api/mensagem/${mensagemForm.id}`, payload)
+                await api.put(`/mensagem/${mensagemForm.id}`, payload)
                 setMensagem("Mensagem atualizada com sucesso.")
             } else {
-                await axios.post("/api/mensagem", payload)
+                await api.post("/mensagem", payload)
                 setMensagem("Mensagem criada com sucesso.")
             }
 
@@ -275,7 +275,7 @@ const Admin = () => {
 
     const deletarMensagem = async (id: string) => {
         try {
-            await axios.delete(`/api/mensagem/${id}`)
+            await api.delete(`/mensagem/${id}`)
             setMensagem("Mensagem removida com sucesso.")
             fetchMensagens()
         } catch (error) {

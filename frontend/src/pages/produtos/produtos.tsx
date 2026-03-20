@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./../../styles/pages/Produtos.css";
 import Navegacao from "../../components/nav";
 
@@ -69,8 +69,8 @@ const ListarProdutos = () => {
             setLoading(true);
             setErro("");
 
-            const resp = await axios.get<Produto[]>(
-                `/api/produtos/nome/${encodeURIComponent(termoLimpo)}`
+            const resp = await api.get<Produto[]>(
+                `/produtos/nome/${encodeURIComponent(termoLimpo)}`
             );
 
             setProdutos(resp.data ?? []);

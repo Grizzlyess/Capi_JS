@@ -7,13 +7,13 @@ import UsuarioLogado from "./pages/usuario_logado/UsuarioLogado";
 import CalculadoraCarbonoMensagem from "./pages/calculadora/CalculadoraCarbonoMensagem";
 import Admin from "./pages/admin/Admin";
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import DefaultLayout from "./defaultLayout";
 import Produtos from "./pages/produtos/produtos";
 import UserConf from "./pages/userConf/userConf";
 
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
         element: <DefaultLayout />,
         children: [
@@ -60,10 +60,7 @@ const router = createBrowserRouter([
             },
         ],
     },
-],
-    {
-        basename: import.meta.env.BASE_URL,
-    });
+]);
 function App() {
     return (
         <>
