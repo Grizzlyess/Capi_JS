@@ -79,45 +79,39 @@ router.get('/:id', async (req, res) => {
 
 // POST - Cadastro (Com envio de email corrigido)
 router.post('/', async (req, res) => {
+    console.log('1. entrou no cadastro');
+
     try {
         const { email, name, pass } = req.body;
+        console.log('2. dados recebidos:', { email, name });
 
         const userExists = await prisma.user.findUnique({ where: { email } });
+        console.log('3. verificou email');
+
         if (userExists) {
+            console.log('4. email já existe');
             return res.status(400).json({ error: 'Email já cadastrado' });
         }
 
         const hashPassword = await bcrypt.hash(pass, 10);
+        console.log('5. gerou hash');
 
         const newUser = await prisma.user.create({
             data: {
-                email: email,
-                name: name,
+                email,
+                name,
                 pass: hashPassword,
             },
         });
+        console.log('6. criou usuário');
 
-        // Configuração do Email de Boas-vindas
-        const mailOptions = {
-            from: `Suporte CAPI <${process.env.EMAIL_USER}>`, // Usa o email do .env
-            to: email,
-            subject: 'Bem-vindo ao CAPI! 🌿',
-            text: `Olá, ${name}! \n\nSeja muito bem-vindo(a) à CAPI. \nEstamos felizes em ter você conosco para juntos melhorar o planeta. \n\nAtt, Equipe CAPI.`,
-        };
+        return res.status(201).json({
+            message: 'Usuário criado com sucesso',
+        });
 
-        // Tenta enviar o email, mas não trava o cadastro se der erro
-        try {
-            await transporter.sendMail(mailOptions);
-            console.log(`✅ Email de boas-vindas enviado para ${email}`);
-        } catch (mailError) {
-            console.error('❌ Erro ao enviar email de boas-vindas:', mailError);
-            // Não retornamos erro 500 aqui para não cancelar o cadastro do usuário
-        }
-
-        res.status(201).json(newUser);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Não foi possível criar o usuário' });
+        console.error('ERRO NO CADASTRO:', error);
+        return res.status(500).json({ error: 'Não foi possível criar o usuário' });
     }
 });
 
