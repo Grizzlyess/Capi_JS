@@ -5,8 +5,8 @@
 }
 
 .calcCard {
-    width: 100%;
-    max-width: 450px;
+    width: 90%;
+    max-width: 600px;
     padding: 2rem;
     border-radius: 20px;
     background: rgba(255,255,255,0.9);

@@ -1,12 +1,10 @@
-// src/pages/user/Cadastro.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import "./../../styles/pages/Cadastro.css";
-import capiIcon from "@/assets/capi.svg"
+import capiIcon from "@/assets/capi.svg";
 
 const Cadastro = () => {
-    console.log("CADASTRO CERTO");
     const navigate = useNavigate();
 
     const [name, setName] = useState("");
@@ -14,35 +12,66 @@ const Cadastro = () => {
     const [pass, setPass] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
     const [msg, setMsg] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleCadastro = async () => {
+    const validar = () => {
+        if (!name || !email || !pass || !confirmPass) {
+            return "Preencha todos os campos.";
+        }
+
+        if (name.trim().length < 4) {
+            return "Nome deve ter pelo menos 4 caracteres.";
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return "Email inválido.";
+        }
+
+        if (pass.length < 4) {
+            return "Senha muito curta.";
+        }
+
         if (pass !== confirmPass) {
-            setMsg("As senhas não coincidem.");
+            return "As senhas não coincidem.";
+        }
+
+        return null;
+    };
+
+    const handleCadastro = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const erro = validar();
+        if (erro) {
+            setMsg(erro);
             return;
         }
 
         try {
-            console.log("antes do post");
+            setLoading(true);
+            setMsg("");
 
             await api.post("/user", {
-                name: name,
-                email: email,
-                pass: pass,
+                name,
+                email,
+                pass,
             });
 
             setMsg("Conta criada com sucesso!");
 
             setTimeout(() => navigate("/login"), 1200);
-
         } catch {
             setMsg("Erro ao criar conta.");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="cadastroPage d-flex flex-column min-vh-100 justify-content-center align-items-center">
 
-            <div className="cadastroCard">
+            <form className="cadastroCard" onSubmit={handleCadastro}>
 
                 <div className="cadastroLogo text-center mb-3">
                     <img src={capiIcon} alt="CAPI" />
@@ -59,6 +88,8 @@ const Cadastro = () => {
                         className="form-control"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        required
+                        minLength={4}
                     />
                 </div>
 
@@ -69,6 +100,7 @@ const Cadastro = () => {
                         className="form-control"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
                 </div>
 
@@ -79,6 +111,8 @@ const Cadastro = () => {
                         className="form-control"
                         value={pass}
                         onChange={(e) => setPass(e.target.value)}
+                        required
+                        minLength={4}
                     />
                 </div>
 
@@ -89,25 +123,25 @@ const Cadastro = () => {
                         className="form-control"
                         value={confirmPass}
                         onChange={(e) => setConfirmPass(e.target.value)}
+                        required
+                        minLength={4}
                     />
                 </div>
 
-                {msg && (
-                    <p className="cadastroMsg">
-                        {msg}
-                    </p>
-                )}
+                {msg && <p className="cadastroMsg">{msg}</p>}
 
                 <button
+                    type="submit"
                     className="btnCadastro"
-                    onClick={handleCadastro}
+                    disabled={loading}
                 >
-                    Cadastrar
+                    {loading ? "Cadastrando..." : "Cadastrar"}
                 </button>
 
                 <div className="cadastroLogin text-center mt-3">
                     <span>Já tem conta?</span>
                     <button
+                        type="button"
                         className="linkBtn"
                         onClick={() => navigate("/login")}
                     >
@@ -115,7 +149,7 @@ const Cadastro = () => {
                     </button>
                 </div>
 
-            </div>
+            </form>
         </div>
     );
 };

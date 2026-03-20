@@ -11,7 +11,7 @@ const CalculadoraCarbono = () => {
 
     const [energia, setEnergia] = useState(0);
     const [precoKwh, setPrecoKwh] = useState(0);
-    const [botijoes, setBotijoes] = useState(0);
+    const [mesesPorBotijao, setMesesPorBotijao] = useState(0);
     const [kmMes, setKmMes] = useState(0);
 
     const [tipoVeiculo, setTipoVeiculo] = useState("");
@@ -23,9 +23,11 @@ const CalculadoraCarbono = () => {
             return;
         }
 
-        // 🔥 lógica da V1 (mantida)
         const carbElec = precoKwh > 0 ? (energia / precoKwh) * 0.0385 : 0;
-        const carbGas = botijoes * 2.938;
+
+        const consumoMensalBotijao =
+            mesesPorBotijao > 0 ? 1 / mesesPorBotijao : 0;
+        const carbGas = consumoMensalBotijao * 2.938;
 
         let carbKm = 0;
 
@@ -33,10 +35,10 @@ const CalculadoraCarbono = () => {
             if (combustivel === "diesel") carbKm = (kmMes / 12.3) * 2.44;
             else if (combustivel === "etanol") carbKm = (kmMes / 11.4) * 1.5;
             else if (combustivel === "gasolina") carbKm = (kmMes / 17.5) * 2.19;
-            else carbKm = (kmMes / 16) * 1.92; // GNV
+            else if (combustivel === "gnv") carbKm = (kmMes / 16) * 1.92;
         } else if (tipoVeiculo === "moto") {
             if (combustivel === "etanol") carbKm = (kmMes / 24.7) * 1.5;
-            else carbKm = (kmMes / 35) * 2.19;
+            else if (combustivel === "gasolina") carbKm = (kmMes / 35) * 2.19;
         } else {
             carbKm = 0;
         }
@@ -66,7 +68,6 @@ const CalculadoraCarbono = () => {
                         Calcule sua Pegada de Carbono
                     </h2>
 
-                    {/* Energia */}
                     <div className="calcGroup mb-3">
                         <label>Gasto mensal com energia (R$)</label>
                         <input
@@ -78,7 +79,6 @@ const CalculadoraCarbono = () => {
                         />
                     </div>
 
-                    {/* Preço kWh */}
                     <div className="calcGroup mb-3">
                         <label>Preço do kWh (R$)</label>
                         <input
@@ -90,19 +90,19 @@ const CalculadoraCarbono = () => {
                         />
                     </div>
 
-                    {/* Botijão */}
                     <div className="calcGroup mb-3">
-                        <label>Botijões de gás por mês</label>
+                        <label>Em média, você troca seu botijão a cada quantos meses?</label>
                         <input
                             type="number"
                             min={0}
-                            value={botijoes}
-                            onChange={(e) => setBotijoes(Number(e.target.value))}
+                            step="1"
+                            value={mesesPorBotijao}
+                            onChange={(e) => setMesesPorBotijao(Number(e.target.value))}
                             className="form-control"
+                            placeholder="Ex: 1, 2, 0.5..."
                         />
                     </div>
 
-                    {/* Tipo de veículo */}
                     <div className="calcGroup mb-3">
                         <label>Tipo de veículo</label>
                         <select
@@ -120,7 +120,6 @@ const CalculadoraCarbono = () => {
                         </select>
                     </div>
 
-                    {/* Combustível - carro */}
                     {tipoVeiculo === "carro" && (
                         <div className="calcGroup mb-3">
                             <label>Combustível do carro</label>
@@ -138,7 +137,6 @@ const CalculadoraCarbono = () => {
                         </div>
                     )}
 
-                    {/* Combustível - moto */}
                     {tipoVeiculo === "moto" && (
                         <div className="calcGroup mb-3">
                             <label>Combustível da moto</label>
@@ -154,7 +152,6 @@ const CalculadoraCarbono = () => {
                         </div>
                     )}
 
-                    {/* KM */}
                     <div className="calcGroup mb-4">
                         <label>Km rodados por mês</label>
                         <input
