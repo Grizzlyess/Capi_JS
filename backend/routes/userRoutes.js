@@ -7,11 +7,34 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 // --- CONFIGURAÇÃO DO GMAIL (NODEMAILER) ---
-const transporter = nodemailer.createTransport({
+/*const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER, // Seu gmail real
         pass: process.env.EMAIL_PASS  // A senha de app de 16 letras
+    }
+});*/
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // true para porta 465
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS // No Render, cole SEM espaços!
+    },
+    tls: {
+        // Isso ajuda a ignorar bloqueios de certificado comuns em servidores Linux/Nuvem
+        rejectUnauthorized: false 
+    }
+});
+
+// Verificação de conexão (adicione isso para ver o log no Render)
+transporter.verify(function (error, success) {
+    if (error) {
+        console.log("❌ Erro na configuração do Nodemailer:", error);
+    } else {
+        console.log("✅ Servidor de e-mail pronto para enviar mensagens");
     }
 });
 
