@@ -118,6 +118,11 @@
 @media (max-width: 768px) {
     .homeGrid {
         grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .homeCard {
+        width: 90vw;
     }
 
     .homeTitle {

@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .admin-panel {
@@ -14,12 +14,14 @@
     max-width: 1100px;
     background: #fff;
     border-radius: 16px;
-    padding: 2rem;
+    padding: 1.5rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
 }
 
 .admin-panel h1 {
     margin-bottom: 1rem;
+    font-size: 1.8rem;
 }
 
 .admin-msg {
@@ -28,6 +30,7 @@
     padding: 0.8rem 1rem;
     border-radius: 10px;
     margin-bottom: 1rem;
+    word-break: break-word;
 }
 
 .admin-tabs {
@@ -44,10 +47,17 @@
     padding: 0.8rem 1rem;
     border-radius: 10px;
     cursor: pointer;
+    flex: 1 1 180px;
+    min-height: 44px;
 }
 
 .admin-section {
     margin-top: 1rem;
+}
+
+.admin-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
 }
 
 .admin-form {
@@ -55,6 +65,13 @@
     flex-direction: column;
     gap: 0.8rem;
     margin-bottom: 1.5rem;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form button {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .admin-form input,
@@ -66,7 +83,7 @@
 }
 
 .admin-form textarea {
-    min-height: 120px;
+    min-height: 140px;
     resize: vertical;
 }
 
@@ -77,6 +94,7 @@
     padding: 0.9rem;
     border-radius: 10px;
     cursor: pointer;
+    min-height: 46px;
 }
 
 .admin-list {
@@ -93,25 +111,24 @@
     border: 1px solid #ddd;
     border-radius: 12px;
     padding: 1rem;
+    box-sizing: border-box;
 }
 
 .admin-card p {
     margin: 0.2rem 0;
+    word-break: break-word;
 }
 
 .admin-card > div:first-child {
     flex: 1;
-}
-
-.admin-form textarea {
-    min-height: 140px;
-    resize: vertical;
+    min-width: 0;
 }
 
 .admin-actions {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .admin-actions button,
@@ -120,6 +137,7 @@
     padding: 0.75rem 1rem;
     border-radius: 10px;
     cursor: pointer;
+    min-height: 44px;
 }
 
 .btn-danger {
@@ -130,4 +148,92 @@
 .obs {
     margin-top: 1rem;
     color: #555;
+}
+
+.admin-tabs button.active {
+    background: #145a38;
+}
+
+/* TABLETS */
+@media (max-width: 768px) {
+    .admin-main {
+        padding: 0.75rem;
+    }
+
+    .admin-panel {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .admin-panel h1 {
+        font-size: 1.5rem;
+    }
+
+    .admin-section h2 {
+        font-size: 1.15rem;
+    }
+
+    .admin-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .admin-actions button,
+    .btn-danger {
+        flex: 1 1 140px;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 480px) {
+    .admin-main {
+        padding: 0.5rem;
+    }
+
+    .admin-panel {
+        padding: 0.85rem;
+        border-radius: 10px;
+    }
+
+    .admin-panel h1 {
+        font-size: 1.3rem;
+    }
+
+    .admin-msg {
+        font-size: 0.95rem;
+        padding: 0.75rem;
+    }
+
+    .admin-tabs {
+        flex-direction: column;
+    }
+
+    .admin-tabs button {
+        width: 100%;
+        flex: none;
+    }
+
+    .admin-form input,
+    .admin-form textarea,
+    .admin-form button {
+        font-size: 0.95rem;
+    }
+
+    .admin-card {
+        padding: 0.85rem;
+    }
+
+    .admin-actions {
+        flex-direction: column;
+    }
+
+    .admin-actions button,
+    .btn-danger {
+        width: 100%;
+    }
 }

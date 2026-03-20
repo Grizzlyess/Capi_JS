@@ -313,10 +313,30 @@ const Admin = () => {
                     {mensagem && <p className="admin-msg">{mensagem}</p>}
 
                     <div className="admin-tabs">
-                        <button onClick={() => setAba("usuarios")}>Usuários</button>
-                        <button onClick={() => setAba("empresas")}>Empresas</button>
-                        <button onClick={() => setAba("admins")}>Administradores</button>
-                        <button onClick={() => setAba("mensagens")}>Mensagens</button>
+                        <button
+                            className={aba === "usuarios" ? "active" : ""}
+                            onClick={() => setAba("usuarios")}
+                        >
+                            Usuários
+                        </button>
+                        <button
+                            className={aba === "empresas" ? "active" : ""}
+                            onClick={() => setAba("empresas")}
+                        >
+                            Empresas
+                        </button>
+                        <button
+                            className={aba === "admins" ? "active" : ""}
+                            onClick={() => setAba("admins")}
+                        >
+                            Administradores
+                        </button>
+                        <button
+                            className={aba === "mensagens" ? "active" : ""}
+                            onClick={() => setAba("mensagens")}
+                        >
+                            Mensagens
+                        </button>
                     </div>
 
                     {aba === "usuarios" && (

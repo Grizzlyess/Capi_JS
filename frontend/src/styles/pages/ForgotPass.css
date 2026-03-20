@@ -74,3 +74,8 @@
 .linkBtn:hover {
     text-decoration: underline;
 }
+@media (max-width: 700px) {
+    .forgotCard {
+        width: 90vw;
+    }
+}

@@ -74,3 +74,10 @@
 .linkBtn:hover {
     text-decoration: underline;
 }
+
+
+@media (max-width: 700px) {
+    .resetCard {
+        width: 90vw;
+    }
+}
