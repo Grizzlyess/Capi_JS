@@ -3,7 +3,7 @@ import Navegacao from "../../components/nav"
 import "./../../styles/pages/Admin.css"
 import { useEffect, useState } from "react"
 import { useSession } from "../../hooks/useSession"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 interface User {
     id: string
