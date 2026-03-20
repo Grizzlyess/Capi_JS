@@ -9,7 +9,7 @@ const Home = () => {
     const navigate = useNavigate();
     const { ultimoCalculo, dataCalculo } = useUltimoCalculo();
     const { msg } = useCarbonoResumo();
-
+    
     const dataFormatada = dataCalculo
         ? new Date(dataCalculo).toLocaleDateString("pt-BR")
         : "Sem data";

@@ -47,13 +47,11 @@ const Navegacao = ({ titulo = "padrao" }: NavegacaoProps) => {
                         >
                             {user?.name}
                         </button>
-                        <button
-                            type="button"
-                            className="dropdown-item"
-                            onClick={() => navigate("/admin")}
-                        >
-                            Central {user?.role || 'neh'}
-                        </button>
+                        {user && user.role === "ADMIN" ? (
+                            <button className="dropdown-item" onClick={() => navigate("/admin")}>
+                                Central Admin
+                            </button>
+                        ) : null}
                         <button
                             type="button"
                             className="dropdown-item"

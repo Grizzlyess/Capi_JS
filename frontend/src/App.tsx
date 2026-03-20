@@ -13,6 +13,7 @@ import Produtos from "./pages/produtos/produtos";
 import UserConf from "./pages/userConf/userConf";
 import ForgotPass from "./pages/login/ForgotPass";
 import ResetPass from "./pages/login/ResetPass";
+import ProtectedRoute from "./ProtectedRoute";
 
 
 const router = createHashRouter([
@@ -22,7 +23,7 @@ const router = createHashRouter([
 
             {
                 path: "/",
-                element: <HomePage />,
+                element: <ProtectedRoute><HomePage /></ProtectedRoute>,
             },
             {
                 path: "/login",
@@ -34,23 +35,23 @@ const router = createHashRouter([
             },
             {
                 path: "/empresas",
-                element: <ListarEmpresas />,
+                element: <ProtectedRoute><ListarEmpresas /></ProtectedRoute>,
             },
             {
                 path: "/calc",
-                element: <CalculadoraCarbono />,
+                element: <ProtectedRoute><CalculadoraCarbono /></ProtectedRoute>,
             },
             {
                 path: "/calcm",
-                element: <CalculadoraCarbonoMensagem />,
+                element: <ProtectedRoute><CalculadoraCarbonoMensagem /></ProtectedRoute>,
             },
             {
                 path: "/perfil",
-                element: <UsuarioLogado />,
+                element: <ProtectedRoute><UsuarioLogado /></ProtectedRoute>,
             },
             {
                 path: "/perfilConf",
-                element: <UserConf />,
+                element: <ProtectedRoute><UserConf /></ProtectedRoute>,
             },
             {
                 path: "/forgotPass",
@@ -62,11 +63,11 @@ const router = createHashRouter([
             },
             {
                 path: "/admin",
-                element: <Admin />,
+                element: <ProtectedRoute><Admin /></ProtectedRoute>,
             },
             {
                 path: "/produtos",
-                element: <Produtos />,
+                element: <ProtectedRoute><Produtos /></ProtectedRoute>,
             },
         ],
     },

@@ -2,6 +2,8 @@ import api from "../../services/api"
 import Navegacao from "../../components/nav"
 import "./../../styles/pages/Admin.css"
 import { useEffect, useState } from "react"
+import { useSession } from "../../hooks/useSession"
+import { Navigate, useNavigate } from "react-router-dom"
 
 interface User {
     id: string
@@ -34,6 +36,15 @@ interface Mensagem {
 }
 
 const Admin = () => {
+    const { user, loading } = useSession();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!loading && user?.role !== "ADMIN") {
+            navigate("/");
+        }
+    }, [user, loading, navigate]);
+
     const [users, setUsers] = useState<User[]>([])
     const [empresas, setEmpresas] = useState<Empresa[]>([])
     const [mensagensCalc, setMensagensCalc] = useState<Mensagem[]>([])
@@ -110,12 +121,6 @@ const Admin = () => {
             setLoadingMensagens(false)
         }
     }
-
-    useEffect(() => {
-        fetchUsers()
-        fetchEmpresas()
-        fetchMensagens()
-    }, [])
 
     const deleteUser = async (id: string) => {
         try {
@@ -286,6 +291,17 @@ const Admin = () => {
         }
     }
 
+    useEffect(() => {
+        if (loading || user?.role !== "ADMIN") return;
+
+        fetchUsers();
+        fetchEmpresas();
+        fetchMensagens();
+    }, [loading, user]);
+
+    if (loading) return <p>Carregando...</p>;
+
+    if (user?.role !== "ADMIN") return null;
     return (
         <div className="Adm">
             <Navegacao titulo="Administrador" />
