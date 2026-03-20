@@ -8,7 +8,7 @@ body {
     height: auto;
     margin: 0;
     background-color: #e6ddb0;
-    background-image: url("src/assets/grama3.svg");
+    background-image: url("@/assets/grama3.svg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

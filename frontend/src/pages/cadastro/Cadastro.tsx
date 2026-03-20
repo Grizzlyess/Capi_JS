@@ -3,8 +3,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import "./../../styles/pages/Cadastro.css";
+import capiIcon from "@/assets/capi.svg"
 
 const Cadastro = () => {
+    console.log("CADASTRO CERTO");
     const navigate = useNavigate();
 
     const [name, setName] = useState("");
@@ -20,6 +22,8 @@ const Cadastro = () => {
         }
 
         try {
+            console.log("antes do post");
+
             await api.post("/user", {
                 name: name,
                 email: email,
@@ -27,6 +31,7 @@ const Cadastro = () => {
             });
 
             setMsg("Conta criada com sucesso!");
+
             setTimeout(() => navigate("/login"), 1200);
 
         } catch {
@@ -40,7 +45,7 @@ const Cadastro = () => {
             <div className="cadastroCard">
 
                 <div className="cadastroLogo text-center mb-3">
-                    <img src="src/assets/capi.svg" alt="CAPI" />
+                    <img src={capiIcon} alt="CAPI" />
                 </div>
 
                 <h2 className="cadastroTitle text-center mb-4">

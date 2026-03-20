@@ -5,6 +5,7 @@ type NavegacaoProps = {
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../hooks/useSession";
 import "../styles/components/NavBar.css"
+import setaIcon from "@/assets/arrow-left-solid-full.svg"
 
 const Navegacao = ({ titulo = "padrao" }: NavegacaoProps) => {
     const navigate = useNavigate()
@@ -19,7 +20,7 @@ const Navegacao = ({ titulo = "padrao" }: NavegacaoProps) => {
     return (
         <nav className="navbar justify-content-between mb-3 px-4">
             <a className="navbar-brand" href="" onClick={() => navigate("/")}>
-                <img src="src/assets/arrow-left-solid-full.svg" alt="" width={35} />
+                <img src={setaIcon} alt="" width={35} />
             </a>
 
             <h2 className="titulo m-0">

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useSession } from "../../hooks/useSession";
 import "./../../styles/pages/Login.css";
+import capiIcon from "@/assets/capi.svg"
 
 const Login = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Login = () => {
             <div className="loginCard">
 
                 <div className="loginLogo mb-3 text-center">
-                    <img src="src/assets/capi.svg" alt="CAPI" />
+                    <img src={capiIcon} alt="CAPI" />
                 </div>
 
                 <h2 className="loginTitle mb-4 text-center">

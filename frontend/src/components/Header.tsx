@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/components/Header.css"
+import capiIcon from "@/assets/capi.svg"
 
 const Header = () => {
   const navigate = useNavigate()
@@ -10,7 +11,7 @@ const Header = () => {
     <header>
       <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
-            <img src="src/assets/capi.svg" id="logo" alt="logo-capi" />
+            <img src={capiIcon} id="logo" alt="logo-capi" />
 
             <nav>CAPI</nav>
 

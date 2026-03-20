@@ -15,6 +15,29 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// const transporter = nodemailer.createTransport({
+//     host: 'smtp.gmail.com',
+//     port: 465,
+//     secure: true, // true para porta 465
+//     auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS // No Render, cole SEM espaços!
+//     },
+//     tls: {
+//         // Isso ajuda a ignorar bloqueios de certificado comuns em servidores Linux/Nuvem
+//         rejectUnauthorized: false 
+//     }
+// });
+
+// Verificação de conexão (adicione isso para ver o log no Render)
+// transporter.verify(function (error, success) {
+//     if (error) {
+//         console.log("❌ Erro na configuração do Nodemailer:", error);
+//     } else {
+//         console.log("✅ Servidor de e-mail pronto para enviar mensagens");
+//     }
+// });
+
 // GET - Listar todos
 router.get('/', async (req, res) => {
     try {
@@ -79,34 +102,37 @@ router.get('/:id', async (req, res) => {
 
 // POST - Cadastro (Com envio de email corrigido)
 router.post('/', async (req, res) => {
-    console.log('1. entrou no cadastro');
-
     try {
         const { email, name, pass } = req.body;
-        console.log('2. dados recebidos:', { email, name });
 
         const userExists = await prisma.user.findUnique({ where: { email } });
-        console.log('3. verificou email');
-
         if (userExists) {
-            console.log('4. email já existe');
             return res.status(400).json({ error: 'Email já cadastrado' });
         }
 
         const hashPassword = await bcrypt.hash(pass, 10);
-        console.log('5. gerou hash');
 
-        const newUser = await prisma.user.create({
+        await prisma.user.create({
             data: {
                 email,
                 name,
                 pass: hashPassword,
             },
         });
-        console.log('6. criou usuário');
 
-        return res.status(201).json({
+        res.status(201).json({
             message: 'Usuário criado com sucesso',
+        });
+
+        transporter.sendMail({
+            from: `Suporte CAPI <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: 'Bem-vindo ao CAPI! 🌿',
+            text: `Olá, ${name}! Seja muito bem-vindo(a) à CAPI.`,
+        }).then(() => {
+            console.log(`✅ Email enviado para ${email}`);
+        }).catch((error) => {
+            console.error('❌ Erro ao enviar email:', error);
         });
 
     } catch (error) {
@@ -154,11 +180,11 @@ router.post('/forgot-pass', async (req, res) => {
 
         await transporter.sendMail(mailOptions);
         console.log(`✅ Email de recuperação enviado para ${email}`);
-        
-        res.json({ message: 'Email enviado com sucesso! Verifique sua caixa de entrada.' });
+
+        return res.json({ message: 'Email enviado com sucesso! Verifique sua caixa de entrada.' });
     } catch (error) {
         console.error('❌ Erro no forgot-pass:', error);
-        res.status(500).json({ error: 'Erro ao enviar email' });
+        return res.status(500).json({ error: 'Erro ao enviar email' });
     }
 });
 
@@ -226,9 +252,12 @@ router.get('/login/me', (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-    req.session.destroy(() => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: 'Erro ao encerrar sessão' });
+        }
         res.clearCookie('sessionId');
-        res.json({ success: true });
+        return res.json({ success: true });
     });
 });
 
@@ -306,7 +335,10 @@ router.delete('/:id', async (req, res) => {
             where: { id },
         });
 
-        req.session.destroy(() => {
+        req.session.destroy((err) => {
+            if (err) {
+                return res.status(500).json({ error: 'Erro ao deletar usuário.' });
+            }
             res.clearCookie('sessionId');
             res.json({ info: 'Usuário deletado com sucesso!' });
         });
@@ -388,7 +420,7 @@ router.patch('/promote-admin', async (req, res) => {
         }
         const updatedUser = await prisma.user.update({
             where: { email },
-            data: { role: "ADMIN"},
+            data: { role: "ADMIN" },
         });
         res.json(updatedUser);
     } catch (error) {

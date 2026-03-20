@@ -1,4 +1,7 @@
 import "../styles/components/Main.css"
+import img1 from "@/assets/img1.jpg"
+import img2 from "@/assets/img2.jpg"
+import img3 from "@/assets/img3.jpg"
 
 const Main = () => {  
   return (
@@ -13,17 +16,17 @@ const Main = () => {
         <div className="row">
           <div className="col p-1">
             <section className="ratio ratio-1x1">
-              <img className="rounded" src="src/assets/img1.jpg" alt="" />
+              <img className="rounded" src={img1} alt="" />
             </section>
           </div>
           <div className="col p-1">
             <section className="ratio ratio-1x1">
-              <img className="rounded" src="src/assets/img2.jpg" alt="" />
+              <img className="rounded" src={img2} alt="" />
             </section>
           </div>
           <div className="col p-1">
             <section className="ratio ratio-1x1">
-              <img className="rounded" src="src/assets/img3.jpg" alt="" />
+              <img className="rounded" src={img3} alt="" />
             </section>
           </div>
         </div>

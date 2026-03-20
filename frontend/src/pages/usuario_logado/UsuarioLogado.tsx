@@ -4,6 +4,9 @@ import Navegacao from "../../components/nav";
 import { useSession } from "../../hooks/useSession";
 import { useUltimoCalculo } from "../../hooks/useCalculos";
 import "./../../styles/pages/UsuarioLogado.css";
+import pegadaIcon from "@/assets/pegada.png"
+import calculadoraIcon from "@/assets/calculadora.png"
+import lista2Icon from "@/assets/lista2.png"
 
 const UsuarioLogado = () => {
     const navigate = useNavigate();
@@ -51,21 +54,21 @@ const UsuarioLogado = () => {
 
                         <li className="linkUser mb-3" onClick={() => navigate("/calcm")}>
                             <span className="iconBox">
-                                <img src="src/assets/pegada.png" alt="" />
+                                <img src={pegadaIcon} alt="" />
                             </span>
                             <span>Pegada de Carbono</span>
                         </li>
 
                         <li className="linkUser mb-3" onClick={() => navigate("/calc")}>
                             <span className="iconBox">
-                                <img src="src/assets/calculadora.png" alt="" />
+                                <img src={calculadoraIcon} alt="" />
                             </span>
                             <span>Calculadora de Carbono</span>
                         </li>
 
                         <li className="linkUser mb-3" onClick={() => navigate("/empresas")}>
                             <span className="iconBox">
-                                <img src="src/assets/lista2.png" alt="" />
+                                <img src={lista2Icon} alt="" />
                             </span>
                             <span>Listar Empresas</span>
                         </li>
