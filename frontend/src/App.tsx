@@ -11,6 +11,8 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import DefaultLayout from "./defaultLayout";
 import Produtos from "./pages/produtos/produtos";
 import UserConf from "./pages/userConf/userConf";
+import ForgotPass from "./pages/login/ForgotPass";
+import ResetPass from "./pages/login/ResetPass";
 
 
 const router = createHashRouter([
@@ -49,6 +51,14 @@ const router = createHashRouter([
             {
                 path: "/perfilConf",
                 element: <UserConf />,
+            },
+            {
+                path: "/forgotPass",
+                element: <ForgotPass />
+            },
+            {
+                path: "/resetPass",
+                element: <ResetPass />
             },
             {
                 path: "/admin",

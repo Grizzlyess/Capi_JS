@@ -1,0 +1,76 @@
+.forgotCard {
+    width: 35vw;
+    min-width: 200px;
+    padding: 2rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.9);
+    border: 1.5px solid #7abf92;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    backdrop-filter: blur(4px);
+}
+
+.forgotLogo img {
+    width: 80px;
+}
+
+.forgotTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #145c39;
+}
+
+.forgotText {
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.formGroup label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #cfe7d7;
+}
+
+.btnForgot {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 10px;
+    background: #208944;
+    color: white;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.btnForgot:hover {
+    background: #186c35;
+    transform: translateY(-2px);
+}
+
+.forgotError {
+    color: #c0392b;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.forgotSuccess {
+    color: #208944;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.linkBtn {
+    border: none;
+    background: none;
+    color: #208944;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.linkBtn:hover {
+    text-decoration: underline;
+}

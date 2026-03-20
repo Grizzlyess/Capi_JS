@@ -63,7 +63,14 @@ const Login = () => {
                         {erro}
                     </p>
                 )}
-
+                <div className="text-center mb-3">
+                    <button
+                        className="linkBtn"
+                        onClick={() => navigate("/forgotPass")}
+                    >
+                        Esqueci minha senha
+                    </button>
+                </div>
                 <button
                     className="btnLogin"
                     onClick={handleLogin}
