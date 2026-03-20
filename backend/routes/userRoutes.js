@@ -120,6 +120,66 @@ router.post('/', async (req, res) => {
             },
         });
 
+        // Retorna sucesso para o Front-end primeiro (rápido!)
+        res.status(201).json({
+            message: 'Usuário criado com sucesso',
+        });
+
+        // --- INÍCIO DO EMAILJS ---
+        const emailData = {
+            service_id: process.env.EMAILJS_SERVICE_ID,
+            template_id: process.env.EMAILJS_TEMPLATE_ID_WELCOME,
+            user_id: process.env.EMAILJS_PUBLIC_KEY,
+            accessToken: process.env.EMAILJS_PRIVATE_KEY,
+            template_params: {
+                email: email, // Preenche o {{email}} do template
+                name: name    // Preenche o {{name}} do template
+            }
+        };
+
+        // Dispara o email em segundo plano usando a porta de internet normal (Adeus bloqueio do Render!)
+        fetch('https://api.emailjs.com/api/v1.0/email/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(emailData)
+        })
+        .then(async (response) => {
+            if (response.ok) {
+                console.log(`✅ Email de boas-vindas enviado via EmailJS para ${email}`);
+            } else {
+                const errorText = await response.text();
+                console.error('❌ Erro no EmailJS:', errorText);
+            }
+        })
+        .catch((error) => {
+            console.error('❌ Falha na requisição para o EmailJS:', error);
+        });
+        // --- FIM DO EMAILJS ---
+
+    } catch (error) {
+        console.error('ERRO NO CADASTRO:', error);
+        return res.status(500).json({ error: 'Não foi possível criar o usuário' });
+    }
+});
+/*router.post('/', async (req, res) => {
+    try {
+        const { email, name, pass } = req.body;
+
+        const userExists = await prisma.user.findUnique({ where: { email } });
+        if (userExists) {
+            return res.status(400).json({ error: 'Email já cadastrado' });
+        }
+
+        const hashPassword = await bcrypt.hash(pass, 10);
+
+        await prisma.user.create({
+            data: {
+                email,
+                name,
+                pass: hashPassword,
+            },
+        });
+
         res.status(201).json({
             message: 'Usuário criado com sucesso',
         });
@@ -139,10 +199,63 @@ router.post('/', async (req, res) => {
         console.error('ERRO NO CADASTRO:', error);
         return res.status(500).json({ error: 'Não foi possível criar o usuário' });
     }
-});
+});*/
 
 // POST - Esqueci minha senha (Com envio corrigido)
 router.post('/forgot-pass', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await prisma.user.findUnique({ where: { email } });
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        const token = Math.floor(100000 + Math.random() * 900000).toString();
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { resetToken: token, resetTokenExpiry: now },
+        });
+
+        // --- INÍCIO DO EMAILJS ---
+        const emailData = {
+            service_id: process.env.EMAILJS_SERVICE_ID,
+            template_id: process.env.EMAILJS_TEMPLATE_ID_RESET, // ID do seu SEGUNDO template
+            user_id: process.env.EMAILJS_PUBLIC_KEY,
+            accessToken: process.env.EMAILJS_PRIVATE_KEY,
+            template_params: {
+                email: email,       // Preenche o {{email}} do template
+                name: user.name,    // Preenche o {{name}} do template
+                token: token        // Preenche o {{token}} do template
+            }
+        };
+
+        const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(emailData)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('❌ Erro no EmailJS (Recuperação):', errorText);
+            return res.status(500).json({ error: 'Erro ao enviar email de recuperação. Tente novamente.' });
+        }
+
+        console.log(`✅ Email de recuperação enviado para ${email}`);
+        return res.json({ message: 'Email enviado com sucesso! Verifique sua caixa de entrada.' });
+        // --- FIM DO EMAILJS ---
+
+    } catch (error) {
+        console.error('❌ Erro no forgot-pass:', error);
+        return res.status(500).json({ error: 'Erro interno ao processar a solicitação' });
+    }
+});
+/*router.post('/forgot-pass', async (req, res) => {
     const { email } = req.body;
 
     try {
@@ -186,7 +299,7 @@ router.post('/forgot-pass', async (req, res) => {
         console.error('❌ Erro no forgot-pass:', error);
         return res.status(500).json({ error: 'Erro ao enviar email' });
     }
-});
+});*/
 
 // POST - Resetar a senha
 router.post('/reset-pass', async (req, res) => {
