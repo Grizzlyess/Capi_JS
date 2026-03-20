@@ -13,7 +13,7 @@ node_modules
 dist
 dist-ssr
 *.local
-# .env
+.env
 /generated/prisma
 
 # Editor directories and files
