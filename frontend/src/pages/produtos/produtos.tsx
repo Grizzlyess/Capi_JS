@@ -14,16 +14,20 @@ const sugestoes = ["Arroz", "Leite", "Feijão", "Macarrão", "Suco"];
 
 const getEcoTexto = (ecoscore: string) => {
     switch (ecoscore?.toUpperCase()) {
+        case "A-PLUS":
+            return "Impacto mínimo. Padrão ouro de sustentabilidade.";
         case "A":
-            return "Impacto ambiental muito baixo";
+            return "Impacto muito baixo. Muito amigável ao meio ambiente.";
         case "B":
-            return "Impacto ambiental baixo";
+            return "Impacto baixo. Sustentável com pequenas melhorias possíveis.";
         case "C":
-            return "Impacto ambiental moderado";
+            return "Impacto moderado. Dentro da média.";
         case "D":
-            return "Impacto ambiental alto";
+            return "Impacto alto. Já prejudica significativamente o ambiente.";
         case "E":
-            return "Impacto ambiental muito alto";
+            return "Impacto muito alto. Forte impacto ambiental.";
+        case "F":
+            return "Impacto extremo. Nível máximo de dano ambiental.";
         default:
             return "Não avaliado";
     }
@@ -31,6 +35,8 @@ const getEcoTexto = (ecoscore: string) => {
 
 const getEcoClasse = (ecoscore: string) => {
     switch (ecoscore?.toUpperCase()) {
+        case "A-PLUS":
+            return "eco-a-plus";
         case "A":
             return "eco-a";
         case "B":
@@ -41,10 +47,23 @@ const getEcoClasse = (ecoscore: string) => {
             return "eco-d";
         case "E":
             return "eco-e";
+        case "F":
+            return "eco-f";
         default:
             return "eco-na";
     }
 };
+
+const legendaEcoscore = [
+    { nota: "A+", classe: "eco-a-plus", texto: "Impacto mínimo (padrão ouro)" },
+    { nota: "A", classe: "eco-a", texto: "Muito baixo impacto" },
+    { nota: "B", classe: "eco-b", texto: "Baixo impacto" },
+    { nota: "C", classe: "eco-c", texto: "Impacto moderado" },
+    { nota: "D", classe: "eco-d", texto: "Impacto alto" },
+    { nota: "E", classe: "eco-e", texto: "Impacto muito alto" },
+    { nota: "F", classe: "eco-f", texto: "Impacto extremo" },
+    { nota: "N/A", classe: "eco-na", texto: "Não avaliado" },
+];
 
 const ListarProdutos = () => {
     const [busca, setBusca] = useState("");
@@ -102,6 +121,17 @@ const ListarProdutos = () => {
         setMostrarSugestoes(false);
     };
 
+    const formatEco = (eco: string) => {
+        if (!eco) return "N/A";
+
+        const value = eco.toUpperCase();
+
+        if (value === "A-PLUS") return "A+";
+        if (value === "UNKNOWN") return "N/A";
+
+        return value;
+    };
+
     return (
         <div className="main emps">
             <Navegacao titulo="Produtos" />
@@ -152,6 +182,31 @@ const ListarProdutos = () => {
                     </form>
                 </div>
 
+                <section className="catalogo-legenda">
+                    <div className="catalogo-legenda-topo">
+                        <h2>Legenda do Ecoscore</h2>
+                        <p>
+                            Dados de produtos baseados na Open Food Facts.{" "}
+                            <a
+                                href="https://br.openfoodfacts.org/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Visitar Open Food Facts
+                            </a>
+                        </p>
+                    </div>
+
+                    <div className="catalogo-legenda-grid">
+                        {legendaEcoscore.map((item) => (
+                            <div className="catalogo-legenda-item" key={item.nota}>
+                                <span className={`eco-badge ${item.classe}`}>{item.nota}</span>
+                                <span>{item.texto}</span>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
                 {erro && <p className="catalogo-erro">{erro}</p>}
 
                 {loading ? (
@@ -188,7 +243,7 @@ const ListarProdutos = () => {
                                     <p>
                                         <strong>Ecoscore:</strong>{" "}
                                         <span className={`eco-badge ${getEcoClasse(produto.ecoscore)}`}>
-                                            {produto.ecoscore || "Não avaliado"}
+                                            {formatEco(produto.ecoscore)}
                                         </span>
                                     </p>
 

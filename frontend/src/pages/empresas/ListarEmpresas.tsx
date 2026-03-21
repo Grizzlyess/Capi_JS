@@ -117,6 +117,22 @@ const ListarEmpresas = () => {
                         onChange={(e) => setBusca(e.target.value)}
                     />
                 </div>
+                <section className="catalogo-legenda">
+                    <div className="catalogo-legenda-topo">
+                        <p>
+                            Dados baseados na{" "}
+                            <a
+                                href="https://sciencebasedtargets.org/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Science Based Targets initiative (SBTi)
+                            </a>
+                            , organização que valida metas de redução de emissões de carbono de empresas.
+
+                        </p>
+                    </div>
+                </section>
 
                 {erro && <p className="catalogo-erro">{erro}</p>}
 
