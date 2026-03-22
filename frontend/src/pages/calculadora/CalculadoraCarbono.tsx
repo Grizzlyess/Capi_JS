@@ -9,10 +9,10 @@ const CalculadoraCarbono = () => {
     const navigate = useNavigate();
     const { user } = useSession();
 
-    const [energia, setEnergia] = useState(0);
-    const [precoKwh, setPrecoKwh] = useState(0);
-    const [mesesPorBotijao, setMesesPorBotijao] = useState(0);
-    const [kmMes, setKmMes] = useState(0);
+    const [energia, setEnergia] = useState("");
+    const [precoKwh, setPrecoKwh] = useState("");
+    const [mesesPorBotijao, setMesesPorBotijao] = useState("");
+    const [kmMes, setKmMes] = useState("");
 
     const [tipoVeiculo, setTipoVeiculo] = useState("");
     const [combustivel, setCombustivel] = useState("");
@@ -23,22 +23,28 @@ const CalculadoraCarbono = () => {
             return;
         }
 
-        const carbElec = precoKwh > 0 ? (energia / precoKwh) * 0.0385 : 0;
+        const energiaNum = Number(energia);
+        const precoKwhNum = Number(precoKwh);
+        const mesesBotijaoNum = Number(mesesPorBotijao);
+        const kmMesNum = Number(kmMes);
+
+        const carbElec =
+            precoKwhNum > 0 ? (energiaNum / precoKwhNum) * 0.0385 : 0;
 
         const consumoMensalBotijao =
-            mesesPorBotijao > 0 ? 1 / mesesPorBotijao : 0;
+            mesesBotijaoNum > 0 ? 1 / mesesBotijaoNum : 0;
         const carbGas = consumoMensalBotijao * 2.938;
 
         let carbKm = 0;
 
         if (tipoVeiculo === "carro") {
-            if (combustivel === "diesel") carbKm = (kmMes / 12.3) * 2.44;
-            else if (combustivel === "etanol") carbKm = (kmMes / 11.4) * 1.5;
-            else if (combustivel === "gasolina") carbKm = (kmMes / 17.5) * 2.19;
-            else if (combustivel === "gnv") carbKm = (kmMes / 16) * 1.92;
+            if (combustivel === "diesel") carbKm = (kmMesNum / 12.3) * 2.44;
+            else if (combustivel === "etanol") carbKm = (kmMesNum / 11.4) * 1.5;
+            else if (combustivel === "gasolina") carbKm = (kmMesNum / 17.5) * 2.19;
+            else if (combustivel === "gnv") carbKm = (kmMesNum / 16) * 1.92;
         } else if (tipoVeiculo === "moto") {
-            if (combustivel === "etanol") carbKm = (kmMes / 24.7) * 1.5;
-            else if (combustivel === "gasolina") carbKm = (kmMes / 35) * 2.19;
+            if (combustivel === "etanol") carbKm = (kmMesNum / 24.7) * 1.5;
+            else if (combustivel === "gasolina") carbKm = (kmMesNum / 35) * 2.19;
         } else {
             carbKm = 0;
         }
@@ -74,7 +80,7 @@ const CalculadoraCarbono = () => {
                             type="number"
                             min={0}
                             value={energia}
-                            onChange={(e) => setEnergia(Number(e.target.value))}
+                            onChange={(e) => setEnergia(e.target.value)}
                             className="form-control"
                         />
                     </div>
@@ -85,7 +91,7 @@ const CalculadoraCarbono = () => {
                             type="number"
                             min={0}
                             value={precoKwh}
-                            onChange={(e) => setPrecoKwh(Number(e.target.value))}
+                            onChange={(e) => setPrecoKwh(e.target.value)}
                             className="form-control"
                         />
                     </div>
@@ -97,7 +103,7 @@ const CalculadoraCarbono = () => {
                             min={0}
                             step="1"
                             value={mesesPorBotijao}
-                            onChange={(e) => setMesesPorBotijao(Number(e.target.value))}
+                            onChange={(e) => setMesesPorBotijao(e.target.value)}
                             className="form-control"
                             placeholder="Ex: 1, 2, 0.5..."
                         />
@@ -158,7 +164,7 @@ const CalculadoraCarbono = () => {
                             type="number"
                             min={0}
                             value={kmMes}
-                            onChange={(e) => setKmMes(Number(e.target.value))}
+                            onChange={(e) => setKmMes(e.target.value)}
                             className="form-control"
                         />
                     </div>
