@@ -387,6 +387,15 @@ router.put('/:id', async (req, res) => {
             name,
         };
 
+        const user = await prisma.user.findFirst({
+            where: { email: email }
+        })
+
+        if (user) {
+            console.error(error);
+            return res.status(409).json({ error: 'Email já cadastrado' })
+        }
+
         if (pass) {
             dataToUpdate.pass = await bcrypt.hash(pass, 10);
         }
