@@ -35,7 +35,7 @@ const Navegacao = ({ titulo = "padrao" }: NavegacaoProps) => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                 >
-                    {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase()}
+                    {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || '...'}
                 </button>
 
                 <ul className="dropdown-menu dropdown-menu-end">
@@ -45,7 +45,7 @@ const Navegacao = ({ titulo = "padrao" }: NavegacaoProps) => {
                             className="dropdown-item"
                             onClick={() => navigate("/perfil")}
                         >
-                            {user?.name}
+                            {user?.name || 'Carregando...'}
                         </button>
                         {user && user.role === "ADMIN" ? (
                             <button className="dropdown-item" onClick={() => navigate("/admin")}>

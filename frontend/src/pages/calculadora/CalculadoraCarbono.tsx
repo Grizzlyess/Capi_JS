@@ -17,16 +17,50 @@ const CalculadoraCarbono = () => {
     const [tipoVeiculo, setTipoVeiculo] = useState("");
     const [combustivel, setCombustivel] = useState("");
 
-    const calcular = async () => {
+    const [resultado, setResultado] = useState<number | null>(null);
+    const [erro, setErro] = useState("");
+    const [salvando, setSalvando] = useState(false);
+
+    const toNumber = (value: string) => {
+        if (value.trim() === "") return 0;
+        return Number(value);
+    };
+
+    const validar = () => {
+        const energiaNum = toNumber(energia);
+        const precoKwhNum = toNumber(precoKwh);
+        const mesesBotijaoNum = toNumber(mesesPorBotijao);
+        const kmMesNum = toNumber(kmMes);
+
         if (!user) {
-            console.log("Não logado");
-            return;
+            setErro("Você precisa estar logado.");
+            return false;
         }
 
-        const energiaNum = Number(energia);
-        const precoKwhNum = Number(precoKwh);
-        const mesesBotijaoNum = Number(mesesPorBotijao);
-        const kmMesNum = Number(kmMes);
+        if (
+            energiaNum < 0 ||
+            precoKwhNum < 0 ||
+            mesesBotijaoNum < 0 ||
+            kmMesNum < 0
+        ) {
+            setErro("Os valores não podem ser negativos.");
+            return false;
+        }
+
+        if ((tipoVeiculo === "carro" || tipoVeiculo === "moto") && !combustivel) {
+            setErro("Selecione o combustível do veículo.");
+            return false;
+        }
+
+        setErro("");
+        return true;
+    };
+
+    const calcularTotal = () => {
+        const energiaNum = toNumber(energia);
+        const precoKwhNum = toNumber(precoKwh);
+        const mesesBotijaoNum = toNumber(mesesPorBotijao);
+        const kmMesNum = toNumber(kmMes);
 
         const carbElec =
             precoKwhNum > 0 ? (energiaNum / precoKwhNum) * 0.0385 : 0;
@@ -45,21 +79,33 @@ const CalculadoraCarbono = () => {
         } else if (tipoVeiculo === "moto") {
             if (combustivel === "etanol") carbKm = (kmMesNum / 24.7) * 1.5;
             else if (combustivel === "gasolina") carbKm = (kmMesNum / 35) * 2.19;
-        } else {
-            carbKm = 0;
         }
 
-        const total = carbElec + carbGas + carbKm;
+        return carbElec + carbGas + carbKm;
+    };
+
+    const calcular = async () => {
+        if (!validar()) {
+            setResultado(null);
+            return;
+        }
+
+        const total = calcularTotal();
+        setResultado(total);
 
         try {
+            setSalvando(true);
+
             await api.post("/calculo", {
-                userId: user.id,
+                userId: user!.id,
                 resultado: total,
             });
 
             navigate("/calcm");
         } catch {
-            console.log("Erro ao salvar cálculo");
+            setErro("Erro ao salvar cálculo.");
+        } finally {
+            setSalvando(false);
         }
     };
 
@@ -69,7 +115,6 @@ const CalculadoraCarbono = () => {
 
             <div className="calcPage d-flex flex-grow-1 justify-content-center align-items-center">
                 <main className="calcCard">
-
                     <h2 className="calcTitle mb-4 text-center">
                         Calcule sua Pegada de Carbono
                     </h2>
@@ -101,7 +146,7 @@ const CalculadoraCarbono = () => {
                         <input
                             type="number"
                             min={0}
-                            step="1"
+                            step="0.1"
                             value={mesesPorBotijao}
                             onChange={(e) => setMesesPorBotijao(e.target.value)}
                             className="form-control"
@@ -169,13 +214,23 @@ const CalculadoraCarbono = () => {
                         />
                     </div>
 
+                    {erro && (
+                        <p className="text-danger mb-3">{erro}</p>
+                    )}
+
+                    {resultado !== null && !erro && (
+                        <p className="text-success mb-3">
+                            Resultado estimado: {resultado.toFixed(2)} kg CO₂/mês
+                        </p>
+                    )}
+
                     <button
                         className="btnCalcular"
                         onClick={calcular}
+                        disabled={salvando}
                     >
-                        Calcular Pegada
+                        {salvando ? "Salvando..." : "Calcular Pegada"}
                     </button>
-
                 </main>
             </div>
         </>

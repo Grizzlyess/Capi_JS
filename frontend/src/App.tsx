@@ -14,13 +14,12 @@ import UserConf from "./pages/userConf/userConf";
 import ForgotPass from "./pages/login/ForgotPass";
 import ResetPass from "./pages/login/ResetPass";
 import ProtectedRoute from "./ProtectedRoute";
-
+import { SessionProvider } from "./contexts/sessionContext";
 
 const router = createHashRouter([
     {
         element: <DefaultLayout />,
         children: [
-
             {
                 path: "/",
                 element: <ProtectedRoute><HomePage /></ProtectedRoute>,
@@ -72,11 +71,12 @@ const router = createHashRouter([
         ],
     },
 ]);
+
 function App() {
     return (
-        <>
+        <SessionProvider>
             <RouterProvider router={router} />
-        </>
+        </SessionProvider>
     );
 }
 
