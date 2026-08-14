@@ -38,11 +38,3 @@ O repositório contém ambas as partes da aplicação, separadas em diretórios:
 * `/frontend`: Contém toda a interface de usuário (UI) e lógicas de apresentação.
 * `/backend`: Contém a API, esquemas do Prisma, rotas (`calculo`, `empresas`, `produtos`, `users`, `mensagens`) e o script de seed inicial (`Empresas.csv`).
 
-## 🚀 Como Executar o Projeto Localmente
-
-Para rodar o projeto na sua máquina, certifique-se de ter o **Node.js** e o **pnpm** instalados.
-
-### 1. Clonar o repositório
-```bash
-git clone [https://github.com/SEU_USUARIO/Capi_JS.git](https://github.com/SEU_USUARIO/Capi_JS.git)
-cd Capi_JS
